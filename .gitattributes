@@ -1,5 +1,6 @@
 # Auto detect text files and perform LF normalization
 * text=auto
-*.bat text eol=crlf
+# .bat giữ nguyên xuống dòng kiểu Windows ngay trong repo (không chuẩn hoá), để mã sha trong BAN-DO-TEP.json khớp tệp lấy từ GitHub
+*.bat -text
 *.command text eol=lf
 *.sh text eol=lf
