@@ -15,7 +15,7 @@ Lần cài đầu, trình cài đặt đo máy thật của bạn (chip, RAM, �
 | Máy của bạn | Giọng của chính bạn | Giọng có sẵn |
 |---|---|---|
 | Mac chip Apple, RAM từ 48 GB | **Fish Audio Drama 3** tại máy, miễn phí: biểu cảm nhất (thi nghe mù 4,5/5 tiếng Việt, 5/5 tiếng Anh) | VieNeu tại máy, hoặc Gemini |
-| Mac chip Apple, RAM 32-47 GB | Drama 3 chạy được nếu đóng bớt ứng dụng; hoặc dịch vụ đám mây | VieNeu hoặc Gemini |
+| Mac chip Apple, RAM 36-47 GB | Drama 3 chạy được nếu đóng bớt ứng dụng (mô hình chiếm 28,6 GB khi chạy); hoặc dịch vụ đám mây | VieNeu hoặc Gemini |
 | Mac ít RAM hơn, Mac chip Intel, Windows | Gemini hoặc ElevenLabs (đám mây, có phí) | VieNeu tại máy (miễn phí, tiếng Việt, biểu cảm yếu) hoặc Gemini |
 
 Điểm số trên là thi nghe mù thật ở xưởng gốc (tháng 11/2026, thang 5), chấm theo 4 tiêu chí: tự nhiên, biểu cảm đúng ý, phát âm đúng, giống giọng người thu. Gemini và ElevenLabs đã có bộ nối nhưng xưởng gốc chưa thi nghe; khi bật lần đầu, AI sẽ làm một lượt thi nghe mù trước khi dùng cho việc thật.

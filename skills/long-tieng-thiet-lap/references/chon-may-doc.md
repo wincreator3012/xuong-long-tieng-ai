@@ -12,8 +12,8 @@
 | Máy thật | Giọng của chính mình | Giọng có sẵn |
 |---|---|---|
 | Mac chip Apple, RAM từ 48 GB (thường là M Max, M Ultra, một số M Pro) | **Drama 3** (`drama3`): biểu cảm nhất, thi nghe 4,5/5 tiếng Việt, 5/5 tiếng Anh. Tải 24 GB, nạp khoảng 30 giây, đọc nhanh hơn thời gian thực | VieNeu (tại máy, miễn phí, biểu cảm yếu) hoặc Gemini (đám mây, có phí) |
-| Mac chip Apple, RAM 32 đến 47 GB | Drama 3 chạy được nếu đóng bớt ứng dụng khác (mô hình chiếm khoảng 29 GB khi chạy), có thể chậm. Không ổn thì ElevenLabs hoặc Gemini với giọng đã đăng ký | như trên |
-| Mac chip Apple, RAM dưới 32 GB | Gemini hoặc ElevenLabs với giọng đã đăng ký (đám mây, có phí); VieNeu nhân bản được nhưng giống giọng kém (thi nghe 1,0/5) | VieNeu hoặc Gemini |
+| Mac chip Apple, RAM 36 đến 47 GB | Drama 3 chạy được nếu đóng bớt ứng dụng khác (đo thật ở xưởng gốc: 28,6 GB bộ nhớ đỉnh), máy 32 GB thì quá sát. Không ổn thì ElevenLabs hoặc Gemini với giọng đã đăng ký | như trên |
+| Mac chip Apple, RAM dưới 36 GB | Gemini hoặc ElevenLabs với giọng đã đăng ký (đám mây, có phí); VieNeu nhân bản được nhưng giống giọng kém (thi nghe 1,0/5) | VieNeu hoặc Gemini |
 | Mac chip Intel, Windows, Linux | như dòng trên: Gemini hoặc ElevenLabs; VieNeu tại máy | VieNeu hoặc Gemini |
 
 Ghi chú:

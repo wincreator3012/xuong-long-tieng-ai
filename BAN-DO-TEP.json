@@ -8,7 +8,7 @@
 {
 "p": ".dong-bo.json",
 "c": 4473,
-"sha": "7f620bcf5b774784c483deb5a2eda08302cda1e4",
+"sha": "362ab7ded3b74825ca90af7a6a76817178aad8c2",
 "vai": "ban-mau"
 },
 {
@@ -100,14 +100,14 @@
 },
 {
 "p": "README.md",
-"c": 10969,
-"sha": "cc953803a0668d992ebc45900f6069e36dacd187",
+"c": 11008,
+"sha": "42105681431a9f0144312b15fda7818970f6f0a5",
 "vai": "ban-mau"
 },
 {
 "p": "THAY-DOI.md",
-"c": 1382,
-"sha": "ba271f3be3235ac17b711567ac6707fae8edc9f5",
+"c": 1531,
+"sha": "37dba1e7c2bff26319167444b427e2ba508d9cc9",
 "vai": "ban-mau"
 },
 {
@@ -131,8 +131,8 @@
 },
 {
 "p": "docs/BAI-HOC.md",
-"c": 6988,
-"sha": "1313dfee8f934e8f1334e48f73f7a8154caea65b",
+"c": 7393,
+"sha": "f7200876a812878d50d2d00fb166270692fb662d",
 "vai": "chep"
 },
 {
@@ -149,8 +149,8 @@
 },
 {
 "p": "may-doc.json",
-"c": 5931,
-"sha": "cd2051f432c9bd16aa09e93a2c25dd48d3524176",
+"c": 5949,
+"sha": "2c3d4ddc591a76453aea8475b099168274fe8148",
 "vai": "chep"
 },
 {
@@ -161,8 +161,8 @@
 },
 {
 "p": "skills/long-tieng-thiet-lap/references/chon-may-doc.md",
-"c": 4617,
-"sha": "d2352fa4674e8246a4376e0b24dbbe2884584b65",
+"c": 4640,
+"sha": "4d9b17b39d47ad414ae876f9ba0ae75a4ba0d226",
 "vai": "chep"
 },
 {

@@ -27,6 +27,7 @@ Chỉ ghi điều đã kiểm chứng qua dự án thật, mỗi bài kèm ngu�
 - 2026-11-19: trình cài đặt chỉ cài cho máy đọc đang bật (`mayDung`) và tự gỡ phần thừa: môi trường không còn máy nào dùng, torch khi không bật Higgs v3, mô hình của máy đã tắt. Dọn xưởng sau thi nghe: gỡ Higgs v3, VieNeu, torch, chỉ giữ Drama 3 và Whisper.
 - 2026-11-19: huggingface_hub bản mới để tệp mô hình trong kho blobs dùng chung, xóa thư mục `models--...` không trả lại chỗ trống; phải gỡ bằng `scan_cache_dir().delete_revisions(...)` (`tools/tai_mo_hinh.py`).
 - 2026-11-19: faster-whisper 1.2.1 hỏng với PyAV bản mới (`open() got an unexpected keyword argument 'metadata_errors'`): giải mã bằng ffmpeg của xưởng rồi đưa mảng số vào (`tools/may_doc/go_bang_fw.py`). Đường không dùng MLX (VieNeu, faster-whisper) đã chạy trọn trình cài và tự kiểm trên Linux; tệp bấm đúp cho Windows chưa thử trên máy Windows thật.
+- 2026-11-19: đo thật trên Mac M4 Max 64 GB sau khi dọn xưởng: Drama 3 chiếm 28,6 GB bộ nhớ đỉnh (MLX), nạp 11,5 giây khi mô hình đã nằm sẵn trên ổ, đọc câu tiếng Việt 7,3 giây trong 2,9 giây. Vì vậy máy 32 GB quá sát (macOS và ứng dụng khác cần thêm vài GB), máy 36 GB chạy được nếu đóng bớt ứng dụng, nên có 48 GB trở lên.
 - 2026-11-19: tự kiểm sau khi cài phải kiểm cả khâu gỡ băng ngược: lần đầu bộ gỡ băng hỏng mà trình cài vẫn báo xong, vì việc sinh tiếng không lỗi.
 
 ## Phát âm tiếng Việt
