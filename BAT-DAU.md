@@ -57,7 +57,7 @@ Xong, cửa sổ báo "Cài xong". Quay lại Claude và nhắn "đã cài xong"
 
 Chọn một đoạn bạn sắp cần thật (30-60 giây), dán vào khung chat và nói:
 
-> Lồng tiếng đoạn này bằng giọng của tôi, tiếng Việt, dùng cho video khoá học.
+> Lồng tiếng đoạn này bằng giọng của tôi, tiếng Việt, dùng cho video khóa học.
 
 Claude soạn lời đọc (chia đoạn theo hơi thở, viết rõ cách đọc số và tên riêng, đặt chỉ dẫn nhịp) để bạn duyệt trên chữ. Bạn gật đầu thì Claude xếp việc và nhờ bạn bấm đúp `Long tieng tren Mac.command` (hoặc `Long tieng tren Windows.bat`). Xong, bấm đúp `Mo ban nghe.command` (hoặc `Mo ban nghe tren Windows.bat`): trang Bàn nghe mở trong trình duyệt, mỗi đoạn có 2-3 lượt đọc, máy đã đánh dấu lượt tốt nhất. Bạn chọn lượt ưng, ghi chú đoạn cần đọc lại, bấm **Ghép bản chính**. Thành phẩm nằm ở `Du an/<tên dự án>/thanh-pham/`.
 

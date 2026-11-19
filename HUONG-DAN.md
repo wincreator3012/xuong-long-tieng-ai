@@ -19,7 +19,7 @@ Trình cài đặt chỉ giữ những gì xưởng đang dùng. Đổi máy đ�
 
 ## Đặt yêu cầu sao cho hay
 
-- **Nói đủ bốn điều trong một câu:** đoạn lời nào, thứ tiếng, giọng (của bạn hay có sẵn), dùng cho đâu. Ví dụ: "Lồng tiếng phần mở đầu bài 2, tiếng Anh, giọng tôi, cho video khoá học trên YouTube."
+- **Nói đủ bốn điều trong một câu:** đoạn lời nào, thứ tiếng, giọng (của bạn hay có sẵn), dùng cho đâu. Ví dụ: "Lồng tiếng phần mở đầu bài 2, tiếng Anh, giọng tôi, cho video khóa học trên YouTube."
 - **Duyệt lời đọc trên chữ trước.** Sửa ở bước này chỉ mất một câu nói; sửa sau khi máy đã đọc mất cả lượt chờ.
 - **Viết cho tai.** Câu ngắn, một ý một câu. Số, ngày, tên riêng, chữ viết tắt: AI viết rõ cách đọc, bạn xem lại chỗ đó.
 - **Góp ý theo đoạn:** "đoạn 3 chậm hơn, nhấn chữ buông", "đoạn 5 đọc vui hơn". Ghi chú thẳng trong Bàn nghe là gọn nhất.
