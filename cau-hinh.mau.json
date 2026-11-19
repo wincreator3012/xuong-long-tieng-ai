@@ -1,0 +1,11 @@
+{
+ "_huong-dan": "Chép thành cau-hinh.json (không lên git) khi cần đổi mặc định. Đường dẫn tương đối tính từ gốc repo. mayDung: danh sách máy đọc bật trên xưởng này (tên trong may-doc.json, máy đầu là mặc định cho dự án mới); để trống thì trình cài đặt đo máy và đề xuất. giongRieng: hồ sơ giọng riêng mặc định, vd \"@an\". thuMucDuAn: hồ sơ dự án. thuMucTam: hàng đợi, việc tạm. thuMucMoiTruong: môi trường Python và mô hình trên máy thật (để trống thì theo hệ điều hành: Mac ~/Library/Application Support/xuong-long-tieng, Windows %LOCALAPPDATA%\\xuong-long-tieng). xuongPhim: thư mục mẹ của xưởng phim (có 'Du an/') để giao tiếng; danh sách thì lấy chỗ đầu tiên có thật. khoTuLieu: đường dẫn kho giọng nếu không nằm ở chỗ mặc định.",
+ "thuMucDuAn": "../Du an",
+ "thuMucTam": "../Du an/_tam",
+ "xuongPhim": [
+  "../../../Xuong phim AI",
+  "../../Xuong phim AI",
+  "~/Xuong phim AI",
+  "~/mnt/Xuong phim AI"
+ ]
+}

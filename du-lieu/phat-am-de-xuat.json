@@ -1,0 +1,16 @@
+{
+ "_huong-dan": "Từ điển phát âm ĐỀ XUẤT của xưởng: cách máy đọc nên đọc tên riêng, chữ viết tắt, từ tiếng Anh trong câu tiếng Việt. Mục nào đã nghe và duyệt thì chuyển sang ngon-ngu/phat-am.json của Kho giong (bản trong kho đè bản này). Khóa là chữ viết đúng như trong kịch bản (phân biệt hoa thường); giá trị theo ngôn ngữ của câu. Trong kịch bản, viết {{chữ|cách đọc}} để đặt cách đọc riêng cho một chỗ.",
+ "muc": {
+  "AI": {"vi": "ây ai"},
+  "M.Ed.": {"vi": "thạc sĩ giáo dục"},
+  "PhD": {"vi": "pi ếch đi"},
+  "Zoom": {"vi": "dum"},
+  "coaching": {"vi": "câu chinh"},
+  "coach": {"vi": "câu"},
+  "mindfulness": {"vi": "chánh niệm"},
+  "workshop": {"vi": "uốc sốp"},
+  "online": {"vi": "on lai"},
+  "email": {"vi": "i meo"},
+  "TP.HCM": {"vi": "Thành phố Hồ Chí Minh"}
+ }
+}

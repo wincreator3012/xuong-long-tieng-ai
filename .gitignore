@@ -1,0 +1,15 @@
+# Xưởng lồng tiếng: repo chỉ chứa NĂNG LỰC (công cụ, skill, tài liệu).
+# Hồ sơ dự án ở "../Du an/", giọng riêng ở "../Kho giong/"; môi trường, mô hình ở thư mục dữ liệu ứng dụng của máy.
+
+cau-hinh.json
+tools/.dung-xuong.json
+tools/.dong-goi-skill.json
+*.wav
+*.mp3
+*.m4a
+.DS_Store
+__pycache__/
+*.pyc
+.tam/
+_to_delete/
+*.tmp

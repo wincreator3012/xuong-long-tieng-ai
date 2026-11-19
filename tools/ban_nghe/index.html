@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bàn nghe - xưởng lồng tiếng</title>
+<style>
+  :root { --nen:#f6f3ee; --giay:#fffdf9; --muc:#1f2a37; --nhat:#6b7280; --vien:#e5dfd5; --nhan:#2f5d50;
+          --nhan-nhat:#e3eee9; --canh:#9a5b13; --canh-nhat:#fbf0dc; --loi:#9b2c2c; --loi-nhat:#fbe5e5; }
+  * { box-sizing:border-box; }
+  [hidden] { display:none !important; }
+  body { margin:0; font:15px/1.55 -apple-system, "SF Pro Text", "Helvetica Neue", sans-serif; background:var(--nen); color:var(--muc); }
+  header { position:sticky; top:0; z-index:5; background:var(--giay); border-bottom:1px solid var(--vien);
+           display:flex; gap:16px; align-items:center; padding:12px 24px; }
+  header h1 { font-size:17px; margin:0; font-weight:600; letter-spacing:.2px; }
+  select, input[type=text], textarea { font:inherit; border:1px solid var(--vien); border-radius:8px; padding:6px 10px; background:#fff; color:inherit; }
+  select { min-width:320px; }
+  nav { display:flex; gap:4px; margin-left:auto; }
+  nav button { border:0; background:transparent; padding:7px 14px; border-radius:8px; font:inherit; color:var(--nhat); cursor:pointer; }
+  nav button.dang { background:var(--nhan-nhat); color:var(--nhan); font-weight:600; }
+  main { max-width:1040px; margin:0 auto; padding:24px 24px 120px; }
+  .mo { color:var(--nhat); margin:0 0 18px; }
+  .the { background:var(--giay); border:1px solid var(--vien); border-radius:12px; padding:16px 18px; margin-bottom:14px; }
+  .muc { font-size:12px; text-transform:uppercase; letter-spacing:.8px; color:var(--nhat); margin-bottom:4px; }
+  .chu { font-size:16px; margin:0 0 12px; }
+  .chu .ma { color:var(--nhat); font-size:12px; margin-right:6px; }
+  .luot { display:grid; grid-template-columns:22px 150px 1fr; gap:10px; align-items:center; padding:8px 0; border-top:1px dashed var(--vien); }
+  .luot label { color:var(--nhat); font-size:13px; }
+  .luot audio { width:100%; height:34px; }
+  .huy { display:flex; flex-wrap:wrap; gap:6px; grid-column:3; margin-top:-2px; }
+  .huy span { font-size:12px; padding:1px 8px; border-radius:20px; background:#f0ece5; color:var(--nhat); }
+  .huy .tot { background:var(--nhan-nhat); color:var(--nhan); font-weight:600; }
+  .huy .canh { background:var(--canh-nhat); color:var(--canh); }
+  .huy .loi { background:var(--loi-nhat); color:var(--loi); }
+  details { grid-column:3; font-size:13px; color:var(--nhat); }
+  details summary { cursor:pointer; }
+  .lam-lai { width:100%; margin-top:10px; }
+  .canh-bao { background:var(--canh-nhat); color:var(--canh); border-radius:10px; padding:10px 14px; margin-bottom:14px; font-size:14px; }
+  footer { position:fixed; bottom:0; left:0; right:0; background:var(--giay); border-top:1px solid var(--vien); padding:12px 24px;
+           display:flex; gap:12px; align-items:center; justify-content:center; flex-wrap:wrap; }
+  footer button, .nut { font:inherit; border-radius:9px; padding:8px 18px; border:1px solid var(--nhan); background:var(--nhan); color:#fff; cursor:pointer; }
+  footer button.phu { background:#fff; color:var(--nhan); }
+  footer button:disabled { opacity:.5; cursor:wait; }
+  #bao { color:var(--nhat); font-size:14px; }
+  .thanh-pham audio { width:100%; }
+  .uv { display:grid; grid-template-columns:56px 1fr; gap:16px; align-items:start; }
+  .uv .chu-cai { font-size:30px; font-weight:700; color:var(--nhan); text-align:center; line-height:1; padding-top:6px; }
+  .tc { display:grid; grid-template-columns:150px 1fr 26px; gap:10px; align-items:center; font-size:14px; }
+  .tc input[type=range] { width:100%; accent-color:var(--nhan); }
+  .tc output { text-align:right; font-weight:600; }
+  table { width:100%; border-collapse:collapse; font-size:14px; }
+  th, td { text-align:left; padding:7px 8px; border-bottom:1px solid var(--vien); }
+  th { color:var(--nhat); font-weight:500; }
+  .trong { color:var(--nhat); text-align:center; padding:60px 0; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Bàn nghe</h1>
+  <select id="duAn"></select>
+  <nav><button id="tabDuyet" class="dang">Nghe duyệt</button><button id="tabThi" hidden>Thi nghe mù</button></nav>
+</header>
+<main id="noiDung"><p class="trong">Đang tải...</p></main>
+<footer id="chan" hidden>
+  <span id="bao"></span>
+  <button class="phu" id="nutLuu">Lưu lựa chọn</button>
+  <button id="nutGhep">Ghép bản chính</button>
+</footer>
+<script>
+const $ = s => document.querySelector(s);
+const h = (tag, attrs = {}, ...con) => { const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) { if (k === 'on') for (const [ev, f] of Object.entries(v)) e.addEventListener(ev, f);
+    else if (v !== undefined && v !== null && v !== false) e.setAttribute(k, v === true ? '' : v); }
+  for (const c of con.flat()) if (c !== null && c !== undefined) e.append(c.nodeType ? c : document.createTextNode(c)); return e; };
+const api = async (url, body) => { const r = await fetch(url, body ? { method: 'POST', body: JSON.stringify(body) } : {});
+  const j = await r.json(); if (!r.ok) throw new Error(j.loi || r.status); return j; };
+const enc = s => encodeURIComponent(s);
+let DA = null, CT = null, tab = 'duyet', chon = {}, lamLai = {};
+
+async function napDanhSach() {
+  const ds = await api('/api/du-an');
+  const sel = $('#duAn'); sel.innerHTML = '';
+  if (!ds.length) { $('#noiDung').innerHTML = '<p class="trong">Chưa có dự án lồng tiếng nào.</p>'; return; }
+  for (const d of ds) sel.append(h('option', { value: d.ten }, d.ten + (d.thiNghe ? '  ·  thi nghe' : '')));
+  const nho = location.hash.slice(1) && decodeURIComponent(location.hash.slice(1));
+  sel.value = ds.some(d => d.ten === nho) ? nho : ds[0].ten;
+  await napDuAn(sel.value);
+}
+
+async function napDuAn(ten) {
+  DA = ten; location.hash = enc(ten);
+  CT = await api('/api/du-an/' + enc(ten));
+  chon = { ...CT.chon }; lamLai = { ...CT.lamLai };
+  const coThi = (await api('/api/du-an')).find(d => d.ten === ten)?.thiNghe;
+  $('#tabThi').hidden = !coThi;
+  if (!coThi && tab === 'thi') tab = 'duyet';
+  ve();
+}
+
+function ve() {
+  $('#tabDuyet').classList.toggle('dang', tab === 'duyet');
+  $('#tabThi').classList.toggle('dang', tab === 'thi');
+  $('#chan').hidden = tab !== 'duyet';
+  return tab === 'duyet' ? veDuyet() : veThi();
+}
+
+function huy(k, laTot) {
+  const ra = [];
+  if (laTot) ra.push(h('span', { class: 'tot' }, 'máy chấm tốt nhất'));
+  if (k.lechLoi !== undefined) ra.push(h('span', { class: k.lechLoi > .3 ? 'loi' : k.lechLoi > .12 ? 'canh' : '' },
+    'lệch lời ' + Math.round(k.lechLoi * 100) + '%'));
+  if (k.tocDo) ra.push(h('span', {}, k.tocDo.toLocaleString('vi') + ' tiếng/giây'));
+  if (k.thoiLuong) ra.push(h('span', {}, k.thoiLuong.toLocaleString('vi') + ' giây'));
+  for (const c of k.co || []) ra.push(h('span', { class: /nhiều|không có|xén/.test(c) ? 'loi' : 'canh' }, c));
+  return h('div', { class: 'huy' }, ra);
+}
+
+function veDuyet() {
+  const m = $('#noiDung'); m.innerHTML = '';
+  const tt = CT.thongTin;
+  m.append(h('p', { class: 'mo' }, `${tt.tieuDe || CT.ten} · ${tt.ngonNgu === 'en' ? 'tiếng Anh' : 'tiếng Việt'} · ${CT.doan.length} đoạn. `
+    + 'Nghe từng đoạn, chọn lượt bạn ưng (không chọn thì máy lấy lượt chấm tốt nhất), ghi chú đoạn cần đọc lại.'));
+  if (CT.canhBao.length) m.append(h('div', { class: 'canh-bao' }, CT.canhBao.join(' · ')));
+  if (CT.thanhPham.length) {
+    const tp = h('div', { class: 'the thanh-pham' }, h('div', { class: 'muc' }, 'Thành phẩm'));
+    for (const t of CT.thanhPham) tp.append(h('div', {}, t.split('/').pop()), h('audio', { controls: true, preload: 'none', src: `/am/${enc(DA)}/${t}` }));
+    m.append(tp);
+  }
+  if (!CT.luot.length) m.append(h('p', { class: 'trong' }, 'Dự án chưa có lượt đọc nào. Nhờ Claude xếp việc, rồi bấm đúp "Long tieng tren Mac.command".'));
+  let mucTruoc = null;
+  for (const d of CT.doan) {
+    const the = h('div', { class: 'the' });
+    if (d.muc && d.muc !== mucTruoc) the.append(h('div', { class: 'muc' }, d.muc));
+    mucTruoc = d.muc;
+    the.append(h('p', { class: 'chu' }, h('span', { class: 'ma' }, d.id), d.chu));
+    const tot = CT.tot[d.id];
+    let co = 0;
+    for (const lt of CT.luot) {
+      if (lt.doanText[d.id] === undefined) continue;
+      const cu = lt.doanText[d.id] !== d.doc;
+      for (const x of lt.muc.filter(x => x.doan === d.id && x.co)) {
+        co++;
+        const id = `r-${d.id}-${lt.luot}-${x.lan}`;
+        const dang = (chon[d.id] || tot) === x.tep;
+        the.append(h('div', { class: 'luot' },
+          h('input', { type: 'radio', name: 'c-' + d.id, id, checked: dang, on: { change: () => { chon[d.id] = x.tep; } } }),
+          h('label', { for: id }, `${lt.luot} · lượt ${x.lan}`, h('br'), `${lt.may} · ${lt.giong || 'ngẫu nhiên'}` + (cu ? ' · lời cũ' : '')),
+          h('audio', { controls: true, preload: 'none', src: `/am/${enc(DA)}/${x.tep}` }),
+          huy(x.kiem, tot === x.tep),
+          x.kiem.nghe ? h('details', {}, h('summary', {}, 'máy nghe được'), x.kiem.nghe,
+            x.kiem.choLech?.length ? h('div', {}, 'chỗ lệch: ' + x.kiem.choLech.join(' · ')) : null) : null));
+      }
+    }
+    if (!co) the.append(h('p', { class: 'mo' }, 'Đoạn này chưa có lượt đọc.'));
+    the.append(h('input', { type: 'text', class: 'lam-lai', placeholder: 'Ghi chú cần đọc lại (vd: chậm hơn, nhấn chữ "buông")',
+      value: lamLai[d.id] || '', on: { input: e => { lamLai[d.id] = e.target.value; } } }));
+    m.append(the);
+  }
+}
+
+async function luu() {
+  $('#bao').textContent = 'Đang lưu...';
+  for (const k of Object.keys(lamLai)) if (!lamLai[k].trim()) delete lamLai[k];
+  await api(`/api/du-an/${enc(DA)}/chon`, { chon, lamLai });
+  $('#bao').textContent = 'Đã lưu lựa chọn. Có ghi chú đọc lại thì báo Claude.';
+}
+
+async function ghep() {
+  const nut = $('#nutGhep'); nut.disabled = true;
+  try { await luu(); $('#bao').textContent = 'Đang ghép...';
+    const kq = await api(`/api/du-an/${enc(DA)}/ghep`, {});
+    $('#bao').textContent = 'Đã ghép ' + kq.tep; await napDuAn(DA);
+  } catch (e) { $('#bao').textContent = 'Không ghép được: ' + e.message; }
+  nut.disabled = false;
+}
+
+async function veThi() {
+  const m = $('#noiDung'); m.innerHTML = '';
+  const T = await api('/api/thi-nghe/' + enc(DA));
+  const diem = JSON.parse(JSON.stringify(T.ketQua?.diem || {}));
+  m.append(h('p', { class: 'mo' }, 'Mỗi chữ cái là một máy đọc hoặc một giọng, cùng đọc một kịch bản. Nghe hết rồi chấm 1 đến 5 '
+    + 'cho từng tiêu chí (0 là bỏ trống). Tên máy chỉ hiện sau khi bạn lưu điểm.'));
+  for (const u of T.ungVien) {
+    diem[u.nhan] = diem[u.nhan] || {};
+    const cot = h('div', {});
+    cot.append(u.co ? h('audio', { controls: true, preload: 'none', src: `/am-thi/${enc(DA)}/${u.nhan}`, style: 'width:100%' })
+                    : h('p', { class: 'mo' }, 'Chưa có tiếng: chờ "Long tieng tren Mac.command" chạy xong.'));
+    for (const t of T.tieuChi) {
+      const o = h('output', {}, diem[u.nhan][t.id] || '-');
+      cot.append(h('div', { class: 'tc', title: t.goi }, h('span', {}, t.ten),
+        h('input', { type: 'range', min: 0, max: 5, step: 1, value: diem[u.nhan][t.id] || 0,
+          on: { input: e => { diem[u.nhan][t.id] = +e.target.value; o.textContent = e.target.value === '0' ? '-' : e.target.value; } } }), o));
+    }
+    cot.append(h('input', { type: 'text', class: 'lam-lai', placeholder: 'Cảm nhận (tùy ý)', value: diem[u.nhan].ghiChu || '',
+      on: { input: e => { diem[u.nhan].ghiChu = e.target.value; } } }));
+    if (u.may) cot.append(h('div', { class: 'huy' }, h('span', { class: 'tot' }, `${u.may} · ${u.giong || 'mặc định'}` + (u.bienThe ? ` · ${u.bienThe}` : ''))));
+    m.append(h('div', { class: 'the uv' }, h('div', { class: 'chu-cai' }, u.nhan), cot));
+  }
+  const nut = h('button', { class: 'nut', on: { click: async () => {
+    nut.disabled = true; await api('/api/thi-nghe/' + enc(DA), { diem }); veThi(); } } }, T.ketQua ? 'Lưu lại điểm' : 'Lưu điểm và lộ tên');
+  m.append(nut);
+  if (T.ketQua) {
+    const tb = u => { const x = Object.entries(diem[u.nhan] || {}).filter(([k, v]) => k !== 'ghiChu' && v > 0).map(([, v]) => v);
+      return x.length ? x.reduce((a, b) => a + b) / x.length : 0; };
+    const hang = [...T.ungVien].sort((a, b) => tb(b) - tb(a));
+    m.append(h('div', { class: 'the', style: 'margin-top:18px' }, h('div', { class: 'muc' }, 'Kết quả'),
+      h('table', {}, h('tr', {}, h('th', {}, ''), h('th', {}, 'Máy đọc'), h('th', {}, 'Giọng'), h('th', {}, 'Trung bình'),
+        ...T.tieuChi.map(t => h('th', {}, t.ten))),
+        hang.map(u => h('tr', {}, h('td', {}, u.nhan), h('td', {}, u.may), h('td', {}, (u.giong || 'mặc định') + (u.bienThe ? ' · ' + u.bienThe : '')),
+          h('td', {}, tb(u).toFixed(2)), ...T.tieuChi.map(t => h('td', {}, diem[u.nhan]?.[t.id] || '-')))))));
+  }
+}
+
+$('#duAn').addEventListener('change', e => napDuAn(e.target.value));
+$('#tabDuyet').onclick = () => { tab = 'duyet'; ve(); };
+$('#tabThi').onclick = () => { tab = 'thi'; ve(); };
+$('#nutLuu').onclick = luu;
+$('#nutGhep').onclick = ghep;
+napDanhSach().catch(e => { $('#noiDung').innerHTML = `<p class="trong">Lỗi: ${e.message}</p>`; });
+</script>
+</body>
+</html>

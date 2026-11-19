@@ -1,0 +1,146 @@
+{
+ "ghi-chu": "Do tools/dong_bo_repo.py của xưởng riêng ghi. Tệp có trong danh sách này sinh tự động: sửa ở xưởng riêng rồi đồng bộ lại, không sửa tay ở đây.",
+ "lan-cuoi": "2026-11-19T10:34:59",
+ "tep": {
+  "Cai dat tren Mac.command": {
+   "md5": "dc9b8003be59be87123fd0f81144b570",
+   "nguon": "Cai dat tren Mac.command"
+  },
+  "Long tieng tren Mac.command": {
+   "md5": "107fb4df77f66d5f9935a2e15e7b29ff",
+   "nguon": "Long tieng tren Mac.command"
+  },
+  "Mo ban nghe.command": {
+   "md5": "3960da4362330531c76842de59498657",
+   "nguon": "Mo ban nghe.command"
+  },
+  "cau-hinh.mau.json": {
+   "md5": "54f87ebaf92abccfff66a7094140415e",
+   "nguon": "cau-hinh.mau.json"
+  },
+  "docs/BAI-HOC.md": {
+   "md5": "cc2cf3e57d46ab552b182aad7882f5b8",
+   "nguon": "BAI-HOC.md"
+  },
+  "docs/THU-MAU-GIONG.md": {
+   "md5": "876dad628088285cf9249a1d4c57360e",
+   "nguon": "docs/THU-MAU-GIONG.md"
+  },
+  "may-doc.json": {
+   "md5": "be6bf4188ac30a8300a0939018d76004",
+   "nguon": "may-doc.json"
+  },
+  "skills/long-tieng/SKILL.md": {
+   "md5": "007bec58cf0ddf0ffcf14122cd8e2091",
+   "nguon": "skills-nguon/ldn-long-tieng/SKILL.md"
+  },
+  "skills/long-tieng/references/mau-nhip-manh.md": {
+   "md5": "107d8ccb53edcd3ed2722f1ac294440e",
+   "nguon": "skills-nguon/ldn-long-tieng/references/mau-nhip-manh.md"
+  },
+  "skills/long-tieng/references/mau-tieng-anh-am.md": {
+   "md5": "fedb241a3be709809d58e956f09f81fb",
+   "nguon": "skills-nguon/ldn-long-tieng/references/mau-tieng-anh-am.md"
+  },
+  "skills/long-tieng/references/viet-loi-doc.md": {
+   "md5": "5e9e7126690abdc73bec78af993a60c5",
+   "nguon": "skills-nguon/ldn-long-tieng/references/viet-loi-doc.md"
+  },
+  "tools/am_thanh.py": {
+   "md5": "8feed961925500b91d24764ac2ba2f46",
+   "nguon": "tools/am_thanh.py"
+  },
+  "tools/ban_nghe/index.html": {
+   "md5": "561bd51f88e7d256421b94d95cc3f482",
+   "nguon": "tools/ban_nghe/index.html"
+  },
+  "tools/ban_nghe/may_chu.py": {
+   "md5": "226a798a8a346535b8f3a776b61a3478",
+   "nguon": "tools/ban_nghe/may_chu.py"
+  },
+  "tools/cai_dat.py": {
+   "md5": "8319c21e0ebbc17027b9f57b594e2cff",
+   "nguon": "tools/cai_dat.py"
+  },
+  "tools/cau_hinh.py": {
+   "md5": "299fe73af59e670b5ffb070eb358bae2",
+   "nguon": "tools/cau_hinh.py"
+  },
+  "tools/do_may.py": {
+   "md5": "a7989520846a07da45d0a1605713fd22",
+   "nguon": "tools/do_may.py"
+  },
+  "tools/du_an_moi.py": {
+   "md5": "420a7566b2993e32a8f3c8f448bcd258",
+   "nguon": "tools/du_an_moi.py"
+  },
+  "tools/ghep_tieng.py": {
+   "md5": "6c950e1939476b807a14703a72f6d1dc",
+   "nguon": "tools/ghep_tieng.py"
+  },
+  "tools/giong_rieng.py": {
+   "md5": "fc05b717a84f08430916a70bb8cb574e",
+   "nguon": "tools/giong_rieng.py"
+  },
+  "tools/hang_doi.py": {
+   "md5": "fbf0ebc98e2e0877d2b24b746f77a9b9",
+   "nguon": "tools/hang_doi.py"
+  },
+  "tools/khoa.py": {
+   "md5": "c2a0e244715d46b0b0901e3872273dd7",
+   "nguon": "tools/khoa.py"
+  },
+  "tools/kiem_tieng.py": {
+   "md5": "9013a54caa4eece02f22bdb77777903c",
+   "nguon": "tools/kiem_tieng.py"
+  },
+  "tools/kiem_tra_xuong.py": {
+   "md5": "e9acbd04850216e6d581ac651a856294",
+   "nguon": "tools/kiem_tra_xuong.py"
+  },
+  "tools/loi_doc.py": {
+   "md5": "43e5cf10d92441708b0901132cb16c03",
+   "nguon": "tools/loi_doc.py"
+  },
+  "tools/may_doc/chung.py": {
+   "md5": "2f1742d5efb71ee4404a772b77039dbe",
+   "nguon": "tools/may_doc/chung.py"
+  },
+  "tools/may_doc/elevenlabs_may.py": {
+   "md5": "cc8e746bc317f2a6ef2d46c5d5b3f705",
+   "nguon": "tools/may_doc/elevenlabs_may.py"
+  },
+  "tools/may_doc/gemini_may.py": {
+   "md5": "0f64318deec75952117e0a3df29db4c8",
+   "nguon": "tools/may_doc/gemini_may.py"
+  },
+  "tools/may_doc/go_bang_fw.py": {
+   "md5": "ce1ff1abf8fda112731c294e589f498e",
+   "nguon": "tools/may_doc/go_bang_fw.py"
+  },
+  "tools/may_doc/go_bang_may.py": {
+   "md5": "fe30e3eb19dc73858a9d8f9e9769e966",
+   "nguon": "tools/may_doc/go_bang_may.py"
+  },
+  "tools/may_doc/mlx_may.py": {
+   "md5": "3813f666d510b970f2433677ee887f4c",
+   "nguon": "tools/may_doc/mlx_may.py"
+  },
+  "tools/may_doc/vieneu_may.py": {
+   "md5": "9cbdab9fdd9fe5d24b3cc5f0da1114e0",
+   "nguon": "tools/may_doc/vieneu_may.py"
+  },
+  "tools/tai_mo_hinh.py": {
+   "md5": "08c0971d77814b7d58a0005522af60bd",
+   "nguon": "tools/tai_mo_hinh.py"
+  },
+  "tools/them_khoa.py": {
+   "md5": "a81b97e7febcb3ee7d23bcc2148a18ba",
+   "nguon": "tools/them_khoa.py"
+  },
+  "tools/thi_nghe.py": {
+   "md5": "324477ace6e2c7904e68a3e7d9c20cb1",
+   "nguon": "tools/thi_nghe.py"
+  }
+ }
+}
