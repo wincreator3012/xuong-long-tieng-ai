@@ -49,6 +49,14 @@ Không dùng ngoặc vuông trong lời đọc: máy đọc như ElevenLabs, Dra
 
 Tiếng Anh ngược với tiếng Việt. `mau-tieng-anh-am.md` (cạnh tệp này) đạt 5/5 ở thi nghe tiếng Anh vòng 2 (19/11/2026, Drama 3, mẫu vi-03): chỉ một dòng `phongCach: ấm, chậm, gần gũi | warm, unhurried, intimate`, không có chỉ dẫn `>` hay `{> ...}` nào, chỉ giữ thẻ `{ngừng}`, `{ngừng dài}`, `{cười nhẹ}`. Cùng lời ấy, bỏ hết chỉ dẫn được 4,75; viết theo khuôn nhịp mạnh chỉ được 4,0 (tự nhiên 3). Có vẻ Drama 3 tự đọc tiếng Anh đã có nhịp biến thiên, chỉ dẫn giữa câu làm nó gượng.
 
+## Bài đọc dài (từ 20 đoạn trở lên)
+
+- Đầu tệp đặt `nghiGiuaDoan: 1.0`, `nghiSauMuc: 1.2`; quãng ngắn hơn làm bài nghe liền, gấp.
+- Trong đoạn: `{ngừng 0.8}` sau dấu chấm giữa đoạn; quanh ngoặc chú thích và gạch ngang `{ngừng 0.4}` đến `{ngừng 0.5}`; từ ghép nối bằng gạch viết tách ra, như `Tâm {ngừng 0.25} Thể`.
+- Từ viết tắt, tên tổ chức, từ dễ đọc sai: `{{UNESCO|du nét scô}}`, `{{AI|ây ai}}`. Chữ ngắn trùng từ tiếng Anh (như "do" nghĩa là "bởi") phải đặt cách đọc: `{{do|gio}}`. Âm cuối nhẹ viết liền chữ ("scô"), không viết "xờ".
+- Số, ngày, phần trăm viết thành chữ. Chú thích tiếng Anh trong ngoặc vuông máy bỏ, nên viết thêm nếu người đọc chữ cần.
+- Chỉ dẫn cho đoạn số liệu: giảng giải, rõ từng ý, nhịp vừa; không "nhịp đều". Hai cảm xúc trái nhau trong một chỉ dẫn làm hỏng đoạn.
+
 ## Ví dụ
 
 ```

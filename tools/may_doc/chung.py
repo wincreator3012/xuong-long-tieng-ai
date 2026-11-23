@@ -78,3 +78,37 @@ def ffmpeg():
 def doi_sang_wav(nguon, dich, tan_so=48000):
     import subprocess
     subprocess.run([ffmpeg(), "-v", "error", "-y", "-i", nguon, "-ac", "1", "-ar", str(tan_so), dich], check=True)
+
+
+def doc_16k(tep):
+    """Giải mã tệp tiếng hoặc phim bằng ffmpeg của xưởng ra mảng float32 mono 16 kHz (đầu vào của Whisper)."""
+    import subprocess
+    import numpy as np
+    r = subprocess.run([ffmpeg(), "-v", "error", "-i", tep, "-vn", "-ac", "1", "-ar", "16000", "-f", "s16le", "-"],
+                       capture_output=True, check=True)
+    return np.frombuffer(r.stdout, dtype=np.int16).astype(np.float32) / 32768.0
+
+
+def doan_chi_tiet(s):
+    """Một câu Whisper (dạng dict) -> câu của transcript chi tiết: lời, mốc, chữ kèm độ chắc, chỉ số để rà nghe ảo."""
+    def so(x, n=3):
+        try:
+            return round(float(x), n)
+        except (TypeError, ValueError):
+            return None
+    chu = [{"w": w.get("word", ""), "s": so(w.get("start"), 2), "e": so(w.get("end"), 2), "p": so(w.get("probability"))}
+           for w in (s.get("words") or [])]
+    return {"start": so(s.get("start"), 2), "end": so(s.get("end"), 2), "text": (s.get("text") or "").strip(),
+            "chu": chu, "logprob": so(s.get("avg_logprob")), "nen": so(s.get("compression_ratio")),
+            "imLang": so(s.get("no_speech_prob"))}
+
+
+def tao_tep_nghe(nguon, dich):
+    """Tệp nghe nhẹ (m4a mono 64 kbps) để Bàn soát phát đúng quãng có chữ nghi; có rồi thì thôi."""
+    import subprocess
+    if os.path.isfile(dich):
+        return
+    tam = dich + ".dang-ghi.m4a"
+    subprocess.run([ffmpeg(), "-v", "error", "-y", "-i", nguon, "-vn", "-ac", "1", "-c:a", "aac", "-b:a", "64k", tam],
+                   check=True)
+    os.replace(tam, dich)

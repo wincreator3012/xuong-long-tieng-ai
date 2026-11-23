@@ -22,6 +22,8 @@ RC=$?
 echo
 if [ $RC -eq 0 ]; then
   echo "Lồng tiếng xong. Bấm đúp 'Mo ban nghe.command' để nghe, hoặc quay lại Claude và nhắn: đã lồng tiếng xong."
+elif [ $RC -eq 75 ]; then
+  echo "Hàng đợi đang được chạy ở nơi khác (Trạm Mac hoặc một cửa sổ khác). Bạn không cần làm gì thêm."
 else
   echo "Có việc bị lỗi. Quay lại Claude và nhắn: lồng tiếng bị lỗi (log ở Du an/_tam/long-tieng/log/)."
 fi

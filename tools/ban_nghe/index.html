@@ -58,7 +58,8 @@
 <header>
   <h1>Bàn nghe</h1>
   <select id="duAn"></select>
-  <nav><button id="tabDuyet" class="dang">Nghe duyệt</button><button id="tabThi" hidden>Thi nghe mù</button></nav>
+  <nav><button id="tabDuyet" class="dang">Nghe duyệt</button><button id="tabThi" hidden>Thi nghe mù</button>
+    <button onclick="location.href='/go-bang'">Soát gỡ băng</button></nav>
 </header>
 <main id="noiDung"><p class="trong">Đang tải...</p></main>
 <footer id="chan" hidden>
@@ -80,7 +81,7 @@ let DA = null, CT = null, tab = 'duyet', chon = {}, lamLai = {};
 async function napDanhSach() {
   const ds = await api('/api/du-an');
   const sel = $('#duAn'); sel.innerHTML = '';
-  if (!ds.length) { $('#noiDung').innerHTML = '<p class="trong">Chưa có dự án lồng tiếng nào.</p>'; return; }
+  if (!ds.length) { $('#noiDung').innerHTML = '<p class="trong">Chưa có dự án lồng tiếng nào. Soát gỡ băng: <a href="/go-bang">mở Bàn soát</a>.</p>'; return; }
   for (const d of ds) sel.append(h('option', { value: d.ten }, d.ten + (d.thiNghe ? '  ·  thi nghe' : '')));
   const nho = location.hash.slice(1) && decodeURIComponent(location.hash.slice(1));
   sel.value = ds.some(d => d.ten === nho) ? nho : ds[0].ten;

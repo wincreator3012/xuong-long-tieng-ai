@@ -4,7 +4,7 @@
 
     python3 tools/kiem_tra_xuong.py
 Kiểm: mọi tệp Python biên dịch được; JSON hợp lệ; đọc số tiếng Việt; đọc kịch bản (thẻ, phát âm, ngừng, chú thích);
-dịch thẻ cho từng máy đọc; mọi máy đọc trong may-doc.json có bộ nối và cách viết thẻ.
+dịch thẻ cho từng máy đọc; mọi máy đọc trong may-doc.json có bộ nối và cách viết thẻ; các hàm lõi của luồng gỡ băng.
 """
 import glob
 import json
@@ -121,6 +121,29 @@ bang("đề xuất Mac 16 GB", do_may.de_xuat(dict(gia, ramGB=16))[0], ["vieneu"
 bang("đề xuất Windows", do_may.de_xuat(dict(gia, he="Windows", kienTruc="AMD64", chipApple=False))[0], ["vieneu"])
 bang("Drama 3 trên Windows", do_may.danh_gia(dict(gia, he="Windows", chipApple=False), "drama3", md["drama3"])[0], "khong")
 bang("môi trường chung trên Windows", CH.ten_venv("chung") if not CH.APPLE else "venv-chung", "venv-chung")
+
+# Luồng gỡ băng: âm tiết tiếng Việt, từ nước ngoài, áp chỗ sửa, câu trả lời, phụ đề không chồng nhau
+import go_bang as GB  # noqa: E402
+for w, mong in [("xưởng", True), ("nghiêng", True), ("khuya", True), ("quyển", True), ("gì", True),
+                ("online", False), ("deadline", False), ("team", False), ("Zoom", False)]:
+    bang(f"âm tiết Việt '{w}'", GB.la_am_tiet_viet(w), mong)
+bang("viết tắt là từ nước ngoài", GB.la_tieng_ngoai("KPI,"), True)
+bang("chữ Việt không phải từ nước ngoài", GB.la_tieng_ngoai("ai"), False)
+gb_thu = {"doan": [{"start": 0, "end": 3, "text": "", "chu": [
+    {"w": " Tôi", "s": 0, "e": .3}, {"w": " học", "s": .3, "e": .6}, {"w": " sô", "s": .6, "e": .9},
+    {"w": " mi,", "s": .9, "e": 1.2}, {"w": " rồi", "s": 1.2, "e": 1.5}, {"w": " về.", "s": 1.5, "e": 2}]}]}
+GB.thay_noi(gb_thu, {"d": 0, "a": 2, "b": 3}, "Somi")
+bang("thay chữ giữ dấu câu", "".join(c["w"] for c in gb_thu["doan"][0]["chu"]), " Tôi học Somi, rồi về.")
+GB.thay_noi(gb_thu, {"d": 0, "a": 4, "b": 5}, "")
+bang("xóa chữ dời dấu chấm", "".join(c["w"] for c in gb_thu["doan"][0]["chu"]), " Tôi học Somi.")
+c_thu = {"id": "c001", "deXuat": ["A", "-"]}
+bang("trả lời +", GB.dich_tra_loi(c_thu, "+"), {"kieu": "sua", "chu": "A"})
+bang("trả lời +2 là xóa", GB.dich_tra_loi(c_thu, "+2"), {"kieu": "xoa"})
+bang("trả lời ok", GB.dich_tra_loi(c_thu, "ok"), {"kieu": "giu"})
+bang("trả lời chữ", GB.dich_tra_loi(c_thu, '"Lê Văn A"'), {"kieu": "sua", "chu": "Lê Văn A"})
+srt = GB.cau_srt({"doan": [{"start": 0, "end": 5, "text": "Một.", "chu": []}, {"start": 4, "end": 6, "text": "Hai.", "chu": []}]})
+bang("phụ đề không chồng nhau", srt[0][1] <= srt[1][0], True)
+bang("mốc srt", GB.moc_srt(3725.5), "01:02:05,500")
 
 if loi:
     print("LỖI:")

@@ -9,6 +9,7 @@ Trong máy ảo (Claude, từ gốc repo):
     python3 tools/hang_doi.py them "../Du an/<dự án>" [--may gemini] [--giong Charon|@an] [--so-luot 2]
                                    [--doan d002,d005] [--luot luot-03] [--khong-ghep]
     python3 tools/hang_doi.py go-bang <tệp.wav> ... [--ngon-ngu vi]   # gỡ băng tệp bất kỳ (vd mẫu giọng mới thu)
+                                                                    # luồng làm transcript: tools/go_bang.py
     python3 tools/hang_doi.py trang-thai
     python3 tools/hang_doi.py don                       # cất việc đã xong
 Trên máy thật (bạn bấm đúp "Long tieng tren Mac.command", tệp đó gọi bằng python của môi trường "chung"):
@@ -153,18 +154,34 @@ def them_dang_ky(ho_so, may, mau=None):
     return jid
 
 
-def them_go_bang(tep, nn="vi"):
-    """Xếp việc gỡ băng cho tệp bất kỳ (mẫu giọng mới thu...): kết quả <tệp>.gb.json cạnh tệp, chạy trên máy thật."""
+def them_go_bang(tep, nn="vi", thu_muc_ra=None, chi_tiet=False, goi_y=None, nhan=None):
+    """Xếp việc gỡ băng cho tệp tiếng hoặc phim bất kỳ, chạy trên máy thật.
+    Mặc định (mẫu giọng mới thu...): kết quả <tệp>.gb.json cạnh tệp.
+    chi_tiet (luồng gỡ băng, tools/go_bang.py): mốc và độ chắc từng chữ, gợi ý từ vựng goi_y, kết quả
+    <thu_muc_ra>/<tên tệp>.gb.json kèm tệp nghe <tên tệp>.nghe.m4a cho Bàn soát."""
     ds = []
     for t in tep:
         if not os.path.isfile(t):
             sys.exit(f"Không thấy tệp {t}")
         ds.append(CH.tuong_doi(t))
-    jid = f"{dt.datetime.now():%Y%m%d-%H%M%S}-go-bang-{len(ds)}-tep"
-    ghi_json(os.path.join(QDIR, jid + ".json"), {"id": jid, "loai": "go-bang", "tep": ds, "ngonNgu": nn,
-                                                 "xepLuc": bay_gio()})
-    print(f"Đã xếp {jid}: gỡ băng {len(ds)} tệp; kết quả ở <tệp>.gb.json")
+    jid = f"{dt.datetime.now():%Y%m%d-%H%M%S}-go-bang-{slug(nhan) + '-' if nhan else ''}{len(ds)}-tep"
+    viec_ = {"id": jid, "loai": "go-bang", "tep": ds, "ngonNgu": nn, "xepLuc": bay_gio()}
+    if chi_tiet:
+        viec_.update(chiTiet=True, goiY=goi_y or None, thuMucRa=CH.tuong_doi(thu_muc_ra) if thu_muc_ra else None)
+    ghi_json(os.path.join(QDIR, jid + ".json"), viec_)
+    noi = "thư mục " + CH.tuong_doi(thu_muc_ra) if thu_muc_ra else "<tệp>.gb.json cạnh tệp"
+    print(f"Đã xếp {jid}: gỡ băng {len(ds)} tệp{' (chi tiết)' if chi_tiet else ''}; kết quả ở {noi}")
     return jid
+
+
+def ra_go_bang(v, tep_rel):
+    """Đường dẫn kết quả (.gb.json) và tệp nghe (hoặc None) của một tệp trong việc gỡ băng."""
+    vao = CH.tuyet_doi(tep_rel)
+    if v.get("thuMucRa"):
+        goc = os.path.join(CH.tuyet_doi(v["thuMucRa"]), os.path.basename(vao))
+    else:
+        goc = os.path.splitext(vao)[0]
+    return goc + ".gb.json", (goc + ".nghe.m4a" if v.get("chiTiet") else None)
 
 
 def viec():
@@ -273,7 +290,32 @@ def mau_cho(giong, nn, may):
     return ra
 
 
+def khoa_chay(thu_muc):
+    """Chỉ một tiến trình chạy hàng đợi mỗi lúc, để Trạm Mac và lần bấm đúp không chạy trùng một việc.
+    Trả về tệp khóa đang giữ (giữ tới khi tiến trình kết thúc), hoặc None khi nơi khác đang chạy."""
+    import errno
+    os.makedirs(thu_muc, exist_ok=True)
+    f = open(os.path.join(thu_muc, ".dang-chay.khoa"), "a+")
+    try:
+        if os.name == "nt":
+            import msvcrt
+            f.seek(0)
+            msvcrt.locking(f.fileno(), msvcrt.LK_NBLCK, 1)
+        else:
+            import fcntl
+            fcntl.flock(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except OSError as e:
+        if e.errno in (errno.EAGAIN, errno.EACCES, errno.EWOULDBLOCK, errno.EDEADLK):
+            f.close()
+            return None
+    return f
+
+
 def chay(chi=None):
+    giu_khoa = khoa_chay(QDIR)
+    if giu_khoa is None:
+        print("Hàng đợi này đang được chạy ở một cửa sổ khác hoặc bởi Trạm Mac. Không cần chạy thêm.")
+        return 75
     vs = [(j, p, kq) for j, p, kq in viec() if not kq or kq.get("trangThai") != "xong"]
     if chi:
         vs = [x for x in vs if x[0] in chi]
@@ -328,9 +370,9 @@ def chay(chi=None):
         if v["loai"] == "go-bang":
             viec_gb.append((jid, v))
             for i, t in enumerate(v["tep"]):
-                wav = CH.tuyet_doi(t)
-                gb.append({"id": f"{jid}|{i}", "vao": wav, "ngonNgu": v.get("ngonNgu", "vi"),
-                           "ra": os.path.splitext(wav)[0] + ".gb.json"})
+                ra, nghe = ra_go_bang(v, t)
+                gb.append({"id": f"{jid}|{i}", "vao": CH.tuyet_doi(t), "ngonNgu": v.get("ngonNgu", "vi"), "ra": ra,
+                           "chiTiet": bool(v.get("chiTiet")), "goiY": v.get("goiY"), "nghe": nghe})
     for jid, (v, du_an, luot, ids) in cua_viec.items():
         for m in luot["muc"]:
             wav = CH.tuyet_doi(m["ra"])
@@ -338,7 +380,8 @@ def chay(chi=None):
                 gb.append({"id": f"{jid}|{m['id']}|gb", "vao": wav, "ngonNgu": luot["ngonNgu"],
                            "ra": wav[:-4] + ".gb.json"})
     if gb:
-        print(f"\n>> Gỡ băng ngược để kiểm: {len(gb)} tệp", flush=True)
+        n_ct = sum(1 for x in gb if x.get("chiTiet"))
+        print(f"\n>> Gỡ băng: {len(gb) - n_ct} tệp để kiểm tiếng, {n_ct} bản ghi làm transcript", flush=True)
         asr = CH.asr()
         with open(os.path.join(LOGDIR, f"{dt.datetime.now():%Y%m%d}-go-bang.log"), "a", encoding="utf-8") as log:
             try:
@@ -444,6 +487,9 @@ def main():
     g = sp.add_parser("go-bang")
     g.add_argument("tep", nargs="+")
     g.add_argument("--ngon-ngu", default="vi")
+    g.add_argument("--chi-tiet", action="store_true", help="mốc, độ chắc từng chữ và tệp nghe (luồng tools/go_bang.py)")
+    g.add_argument("--ra", help="thư mục kết quả (mặc định cạnh tệp)")
+    g.add_argument("--goi-y", help="tên riêng, thuật ngữ gợi cho máy nghe")
     sp.add_parser("trang-thai")
     sp.add_parser("don")
     c = sp.add_parser("chay")
@@ -454,7 +500,7 @@ def main():
         them(a.du_an, a.may, a.giong, a.so_luot, a.doan.split(",") if a.doan else None, a.luot,
              tu_ghep=not a.khong_ghep)
     elif a.lenh == "go-bang":
-        them_go_bang(a.tep, a.ngon_ngu)
+        them_go_bang(a.tep, a.ngon_ngu, thu_muc_ra=a.ra, chi_tiet=a.chi_tiet, goi_y=a.goi_y)
     elif a.lenh == "trang-thai":
         trang_thai()
     elif a.lenh == "don":

@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
-"""Gỡ băng ngược để kiểm trên máy không phải Mac chip Apple (môi trường venv-chung): faster-whisper large-v3-turbo.
+"""Gỡ băng trên máy không phải Mac chip Apple (môi trường venv-chung): faster-whisper large-v3-turbo.
 Có GPU NVIDIA (CUDA) thì chạy trên GPU, không thì CPU với int8.
 
-    python go_bang_fw.py <danh-sach.json>      (cùng định dạng với go_bang_may.py)
+    python go_bang_fw.py <danh-sach.json>      (cùng định dạng và hai chế độ với go_bang_may.py)
 """
 import json
 import os
 import sys
+import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import chung  # noqa: E402
@@ -29,21 +30,35 @@ def nap():
     return WhisperModel(DS["moHinh"], device="cpu", compute_type="int8")
 
 
-def doc_16k(tep):
-    """Giải mã bằng ffmpeg của xưởng ra mảng float32 16 kHz (tránh lệ thuộc phiên bản PyAV của faster-whisper)."""
-    import subprocess
-    import numpy as np
-    r = subprocess.run([chung.ffmpeg(), "-v", "error", "-i", tep, "-ac", "1", "-ar", "16000", "-f", "s16le", "-"],
-                       capture_output=True, check=True)
-    return np.frombuffer(r.stdout, dtype=np.int16).astype(np.float32) / 32768.0
-
-
 def go(m, model, ra):
-    seg, _ = model.transcribe(doc_16k(m["vao"]), language=m.get("ngonNgu", "vi"), condition_on_previous_text=False,
-                              beam_size=5, vad_filter=False)
-    doan = [{"start": round(s.start, 2), "end": round(s.end, 2), "text": s.text.strip()} for s in seg]
+    # Giải mã bằng ffmpeg của xưởng (tránh lệ thuộc phiên bản PyAV của faster-whisper)
+    am = chung.doc_16k(m["vao"])
+    if not m.get("chiTiet"):
+        seg, _ = model.transcribe(am, language=m.get("ngonNgu", "vi"), condition_on_previous_text=False,
+                                  beam_size=5, vad_filter=False)
+        doan = [{"start": round(s.start, 2), "end": round(s.end, 2), "text": s.text.strip()} for s in seg]
+        with open(ra, "w", encoding="utf-8") as f:
+            json.dump({"text": " ".join(d["text"] for d in doan).strip(), "doan": doan}, f, ensure_ascii=False, indent=1)
+        return
+    tl = len(am) / 16000
+    print(f"    {os.path.basename(m['vao'])}: {tl / 60:.1f} phút tiếng, đang gỡ băng...", flush=True)
+    t = time.time()
+    seg, _ = model.transcribe(am, language=m.get("ngonNgu", "vi"), condition_on_previous_text=False, beam_size=5,
+                              vad_filter=False, word_timestamps=True, hotwords=m.get("goiY") or None,
+                              hallucination_silence_threshold=2.0)   # hotwords nhắc lại ở mọi cửa sổ 30 giây
+    doan = []
+    for s in seg:
+        doan.append(chung.doan_chi_tiet({
+            "start": s.start, "end": s.end, "text": s.text, "avg_logprob": s.avg_logprob,
+            "no_speech_prob": s.no_speech_prob, "compression_ratio": s.compression_ratio,
+            "words": [{"word": w.word, "start": w.start, "end": w.end, "probability": w.probability}
+                      for w in (s.words or [])]}))
     with open(ra, "w", encoding="utf-8") as f:
-        json.dump({"text": " ".join(d["text"] for d in doan).strip(), "doan": doan}, f, ensure_ascii=False, indent=1)
+        json.dump({"text": " ".join(d["text"] for d in doan).strip(), "doan": doan, "thoiLuong": round(tl, 2),
+                   "moHinh": DS["moHinh"], "giay": round(time.time() - t, 1), "luc": time.strftime("%Y-%m-%d %H:%M:%S")},
+                  f, ensure_ascii=False, indent=1)
+    if m.get("nghe"):
+        chung.tao_tep_nghe(m["vao"], m["nghe"])
 
 
 if __name__ == "__main__":

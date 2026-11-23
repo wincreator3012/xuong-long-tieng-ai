@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bàn soát gỡ băng</title>
+<style>
+  :root { --nen:#f6f3ee; --giay:#fffdf9; --muc:#1f2a37; --nhat:#6b7280; --vien:#e5dfd5; --nhan:#2f5d50;
+          --nhan-nhat:#e3eee9; --canh:#9a5b13; --canh-nhat:#fbf0dc; --loi:#9b2c2c; --loi-nhat:#fbe5e5; }
+  * { box-sizing:border-box; }
+  [hidden] { display:none !important; }
+  body { margin:0; font:15px/1.55 -apple-system, "SF Pro Text", "Helvetica Neue", sans-serif; background:var(--nen); color:var(--muc); }
+  header { position:sticky; top:0; z-index:5; background:var(--giay); border-bottom:1px solid var(--vien);
+           display:flex; gap:16px; align-items:center; padding:12px 24px; flex-wrap:wrap; }
+  header h1 { font-size:17px; margin:0; font-weight:600; }
+  header a { color:var(--nhat); text-decoration:none; font-size:14px; margin-left:auto; }
+  select, input[type=text] { font:inherit; border:1px solid var(--vien); border-radius:8px; padding:6px 10px; background:#fff; color:inherit; }
+  select { min-width:300px; }
+  .loc { display:flex; gap:4px; }
+  .loc button { border:0; background:transparent; padding:6px 12px; border-radius:8px; font:inherit; color:var(--nhat); cursor:pointer; }
+  .loc button.dang { background:var(--nhan-nhat); color:var(--nhan); font-weight:600; }
+  main { max-width:960px; margin:0 auto; padding:24px 24px 120px; }
+  .mo { color:var(--nhat); margin:0 0 18px; }
+  .the { background:var(--giay); border:1px solid var(--vien); border-radius:12px; padding:14px 18px; margin-bottom:12px; }
+  .the.xong { border-color:var(--nhan); }
+  .dau { display:flex; gap:10px; align-items:baseline; flex-wrap:wrap; }
+  .so { font-weight:700; color:var(--nhan); min-width:28px; }
+  .moc { color:var(--nhat); font-size:13px; font-variant-numeric:tabular-nums; }
+  .ly { font-size:12px; padding:1px 8px; border-radius:20px; background:var(--canh-nhat); color:var(--canh); }
+  .cau { font-size:16px; margin:8px 0 10px; }
+  .cau mark { background:var(--canh-nhat); color:var(--muc); padding:1px 3px; border-radius:4px; font-weight:600; }
+  .nghe { display:flex; gap:8px; margin-bottom:10px; }
+  .nghe button, footer button { font:inherit; border-radius:9px; padding:6px 14px; border:1px solid var(--nhan); background:#fff; color:var(--nhan); cursor:pointer; }
+  .chon { display:flex; flex-wrap:wrap; gap:8px 18px; align-items:center; }
+  .chon label { display:flex; gap:6px; align-items:center; cursor:pointer; }
+  .chon input[type=text] { min-width:240px; }
+  footer { position:fixed; bottom:0; left:0; right:0; background:var(--giay); border-top:1px solid var(--vien); padding:12px 24px;
+           display:flex; gap:12px; align-items:center; justify-content:center; flex-wrap:wrap; }
+  footer button.chinh { background:var(--nhan); color:#fff; }
+  #bao { color:var(--nhat); font-size:14px; }
+  .trong { color:var(--nhat); text-align:center; padding:60px 0; }
+  details.tu-sua { margin-top:18px; }
+  details.tu-sua summary { cursor:pointer; color:var(--nhat); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Bàn soát gỡ băng</h1>
+  <select id="duAn"></select>
+  <div class="loc"><button id="locChua" class="dang">Chưa trả lời</button><button id="locHet">Tất cả</button></div>
+  <a href="/">Bàn nghe lồng tiếng</a>
+</header>
+<main id="noiDung"><p class="trong">Đang tải...</p></main>
+<footer><span id="bao">Phím tắt: R nghe lại chỗ vừa nghe.</span><button class="chinh" id="nutLuu">Lưu câu trả lời</button></footer>
+<audio id="may" preload="none"></audio>
+<script>
+const $ = s => document.querySelector(s);
+const h = (tag, attrs = {}, ...con) => { const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) { if (k === 'on') for (const [ev, f] of Object.entries(v)) e.addEventListener(ev, f);
+    else if (v !== undefined && v !== null && v !== false) e.setAttribute(k, v === true ? '' : v); }
+  for (const c of con.flat()) if (c !== null && c !== undefined) e.append(c.nodeType ? c : document.createTextNode(c)); return e; };
+const api = async (url, body) => { const r = await fetch(url, body ? { method: 'POST', body: JSON.stringify(body) } : {});
+  const j = await r.json(); if (!r.ok) throw new Error(j.loi || r.status); return j; };
+const enc = s => encodeURIComponent(s);
+const moc = t => { t = Math.max(0, t || 0); const g = Math.floor(t / 3600), p = Math.floor(t % 3600 / 60), s = Math.floor(t % 60);
+  return (g ? String(g).padStart(2, '0') + ':' : '') + String(p).padStart(2, '0') + ':' + String(s).padStart(2, '0'); };
+let DA = null, CT = null, traLoi = {}, loc = 'chua', dungLuc = null, vuaNghe = null;
+const may = $('#may');
+may.addEventListener('timeupdate', () => { if (dungLuc !== null && may.currentTime >= dungLuc) { may.pause(); dungLuc = null; } });
+
+function nghe(c, rong) {
+  const tep = CT.tep[c.tep];
+  if (!tep || !tep.nghe) { $('#bao').textContent = 'Chưa có tệp nghe cho ' + (tep ? tep.ten : 'tệp này') + '.'; return; }
+  const dem = rong ? 6 : 1.5;
+  const src = `/am-gb/${enc(DA)}/${tep.nghe.split('/').map(enc).join('/')}`;
+  if (may.getAttribute('src') !== src) may.setAttribute('src', src);
+  const bat = Math.max(0, (c.bat || 0) - dem);
+  dungLuc = (c.het || c.bat || 0) + dem;
+  vuaNghe = [c, rong];
+  const chay = () => { may.currentTime = bat; may.play().catch(e => { $('#bao').textContent = 'Không phát được: ' + e.message; }); };
+  if (may.readyState >= 1) chay(); else { may.addEventListener('loadedmetadata', chay, { once: true }); may.load(); }
+}
+
+async function napDanhSach() {
+  const ds = await api('/api/go-bang');
+  const sel = $('#duAn'); sel.innerHTML = '';
+  if (!ds.length) { $('#noiDung').innerHTML = '<p class="trong">Chưa có dự án gỡ băng nào đã rà xong.</p>'; return; }
+  for (const d of ds) sel.append(h('option', { value: d.ten }, `${d.ten}  ·  còn ${d.conLai} chỗ`));
+  const nho = location.hash.slice(1) && decodeURIComponent(location.hash.slice(1));
+  sel.value = ds.some(d => d.ten === nho) ? nho : ds[0].ten;
+  await napDuAn(sel.value);
+}
+
+async function napDuAn(ten) {
+  DA = ten; location.hash = enc(ten);
+  CT = await api('/api/go-bang/' + enc(ten));
+  traLoi = JSON.parse(JSON.stringify(CT.traLoi || {}));
+  ve();
+}
+
+function the(c) {
+  const t = traLoi[c.id] || {};
+  const ten = 'tl-' + c.id;
+  const o = h('div', { class: 'the' + (traLoi[c.id] ? ' xong' : '') });
+  const dat = (kieu, chu) => { traLoi[c.id] = chu === undefined ? { kieu } : { kieu, chu }; o.classList.add('xong'); };
+  o.append(h('div', { class: 'dau' }, h('span', { class: 'so' }, c.so || c.id), h('span', { class: 'moc' }, moc(c.bat)
+      + (CT.tep.length > 1 ? ' · ' + CT.tep[c.tep].ten : '') + (c.soLan > 1 ? ` · ${c.soLan} chỗ` : '')),
+    ...c.lyDo.map(l => h('span', { class: 'ly' }, l))));
+  o.append(h('p', { class: 'cau' }, '…' + c.truoc + ' ', h('mark', {}, c.chu || 'quãng trống'), ' ' + c.sau + '…'));
+  o.append(h('div', { class: 'nghe' }, h('button', { on: { click: () => nghe(c) } }, '▶ Nghe'),
+    h('button', { on: { click: () => nghe(c, true) } }, 'Nghe rộng hơn')));
+  const chon = h('div', { class: 'chon' });
+  c.deXuat.forEach((d, k) => {
+    const la = d === '-' ? (t.kieu === 'xoa') : (t.kieu === 'sua' && t.chu === d);
+    chon.append(h('label', {}, h('input', { type: 'radio', name: ten, checked: la,
+      on: { change: () => d === '-' ? dat('xoa') : dat('sua', d) } }), d === '-' ? 'Xóa câu này' : d));
+  });
+  chon.append(h('label', {}, h('input', { type: 'radio', name: ten, checked: t.kieu === 'giu', on: { change: () => dat('giu') } }),
+    c.chu ? `Giữ "${c.chu}"` : 'Im lặng thật'));
+  chon.append(h('label', {}, h('input', { type: 'radio', name: ten, checked: t.kieu === 'khong-ro', on: { change: () => dat('khong-ro') } }),
+    'Không rõ'));
+  const tu = t.kieu === 'sua' && !c.deXuat.includes(t.chu) ? t.chu : '';
+  chon.append(h('input', { type: 'text', placeholder: c.chu ? 'Chữ đúng' : 'Lời bị sót (nếu có)', value: tu,
+    on: { input: e => { if (e.target.value.trim()) { dat('sua', e.target.value.trim());
+      o.querySelectorAll(`input[name="${ten}"]`).forEach(r => { r.checked = false; }); } } } }));
+  o.append(chon);
+  return o;
+}
+
+function ve() {
+  $('#locChua').classList.toggle('dang', loc === 'chua');
+  $('#locHet').classList.toggle('dang', loc === 'het');
+  const m = $('#noiDung'); m.innerHTML = '';
+  const hoi = CT.cho.filter(c => !c.tuSua);
+  const tuSua = CT.cho.filter(c => c.tuSua);
+  const hien = hoi.filter(c => loc === 'het' || !(CT.traLoi || {})[c.id]);
+  m.append(h('p', { class: 'mo' }, `${CT.tieuDe} · ${hoi.length} chỗ cần bạn xác nhận, đã trả lời `
+    + `${hoi.filter(c => traLoi[c.id]).length}. Nghe từng chỗ, chọn chữ đúng hoặc gõ chữ khác, rồi bấm "Lưu câu trả lời".`));
+  if (!hien.length) m.append(h('p', { class: 'trong' }, 'Không còn chỗ nào chưa trả lời. Báo Claude để xuất transcript.'));
+  hien.forEach(c => m.append(the(c)));
+  if (tuSua.length) {
+    const d = h('details', { class: 'tu-sua' }, h('summary', {}, `${tuSua.length} chỗ Claude tự chuẩn chính tả (mở để xem, đổi nếu cần)`));
+    tuSua.forEach(c => d.append(the(c)));
+    m.append(d);
+  }
+}
+
+async function luu() {
+  $('#bao').textContent = 'Đang lưu...';
+  try {
+    const kq = await api(`/api/go-bang/${enc(DA)}/tra-loi`, { traLoi });
+    CT.traLoi = kq.traLoi;
+    const o = [...$('#duAn').options].find(x => x.value === DA); if (o) o.textContent = `${DA}  ·  còn ${kq.conLai} chỗ`;
+    $('#bao').textContent = `Đã lưu. Còn ${kq.conLai} chỗ chưa trả lời` + (kq.conLai ? '.' : ': báo Claude để xuất transcript.');
+  } catch (e) { $('#bao').textContent = 'Không lưu được: ' + e.message; }
+}
+
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' && e.target.type === 'text') return;
+  if (e.key === 'r' || e.key === 'R') { if (vuaNghe) nghe(...vuaNghe); }
+});
+$('#duAn').addEventListener('change', e => napDuAn(e.target.value));
+$('#locChua').onclick = () => { loc = 'chua'; ve(); };
+$('#locHet').onclick = () => { loc = 'het'; ve(); };
+$('#nutLuu').onclick = luu;
+napDanhSach().catch(e => { $('#noiDung').innerHTML = `<p class="trong">Lỗi: ${e.message}</p>`; });
+</script>
+</body>
+</html>

@@ -24,6 +24,19 @@ Người nghe chỉ nhận ra giọng máy ở 3 chỗ: phát âm sai (tên riê
 9. **Ghép bản chính:** người dùng bấm "Ghép bản chính" ở Bàn nghe, hoặc `python3 tools/ghep_tieng.py "../Du an/<dự án>"`. Kiểm `thanh-pham/*.moc.json`: không thiếu đoạn, thời lượng hợp lý.
 10. **Giao:** cho phim của xưởng phim thì `--giao-phim "<dự án phim>"` (vào `nguon/voice.wav`; xem quy tắc về tiếng AI trong phim ở `CLAUDE.md`). Ghi bài học mới vào `docs/BAI-HOC.md` khi có (phát âm sai lặp lại, máy đọc hợp loại việc nào).
 
+## Bài đọc dài, kiểm bản đã ghép và nhạc nền
+
+Rút từ bài "Làm người hay người làm" (43 đoạn, gần 10 phút, 11/2026); chi tiết và số đo ở `docs/BAI-HOC.md`.
+
+- **Nhịp nghỉ mặc định cho bài dài:** `nghiGiuaDoan: 1.0`, `nghiSauMuc: 1.2`; `{ngừng 0.8}` sau dấu chấm giữa đoạn; `{ngừng 0.4}` đến `{ngừng 0.5}` quanh ngoặc chú thích và gạch ngang; `{ngừng 0.25}` ở từ ghép nối bằng gạch.
+- **Chỉ dẫn cho số liệu:** không dặn "đều", "even", "steady" (máy đọc phẳng lì); dặn giảng giải rõ từng ý hoặc kể có nhấn, đặt `{> nhấn}` trước con số lớn; không dặn hai cảm xúc trái nhau.
+- **Mọi lượt của một đoạn cùng hỏng, lệch lời lớn, dài bất thường:** thường là máy đọc lại câu của mẫu giọng. Đổi chỉ dẫn sang kiểu giảng giải, thêm `{ngừng}` giữa đoạn, sinh lại 4 đến 6 lượt. Đổi chỉ dẫn xong phải xem `kiem.json` ngay; hỏng hơn thì trả lại chỉ dẫn cũ.
+- **Mã đoạn đánh theo vị trí:** không tách hay chen đoạn sau khi đã xếp việc; không đếm mã bằng tay, lấy từ `moc.json` hoặc `kiem.json`; `--doan` nhận danh sách cách nhau bằng dấu phẩy.
+- **Chọn giữa các lượt sạch:** loại cờ trong `kiem.json` trước; còn nhiều lượt thì xem độ đều giọng bằng `python3 tools/do_nhip.py "../Du an/<dự án>" <nhóm lượt>` (cỡ 4,0 là tự nhiên, dưới 3,7 là đều đều), rồi mới để người dùng nghe. Thước này chỉ là phụ.
+- **Trước khi giao, quét bản đã ghép:** kiểm mã thoát của `ghep_tieng.py` (báo "Thiếu lượt đọc" thì dừng, đừng nối lệnh trộn nhạc sau nó); lấy lượt thực dùng của từng đoạn trong `moc.json`, đưa qua `kiem.json`, không còn cờ nào; thời lượng lệch nhiều so với dự tính là dấu hiệu sớm nhất.
+- **Từ đọc sai lặp lại:** thử phiên âm bằng dự án thử (một đoạn một biến thể, 4 lượt mỗi đoạn), nghe lại bằng gỡ băng ngược để chọn, đưa kết quả vào `du-lieu/phat-am-de-xuat.json`; chỉ chuyển sang kho khi người dùng nghe và duyệt. Dùng `{{chữ|cách đọc}}` trong lời đọc.
+- **Nhạc nền khi người dùng muốn:** `python3 tools/long_nhac.py tao <nhac-nen.wav>` tạo nhạc gốc bằng mã (hoặc dùng nhạc thư viện của xưởng phim nếu thư mục đã nối), rồi `python3 tools/long_nhac.py tron <bản chính.wav> <nhac-nen.wav>` ra bản có nhạc kèm bản chỉ giọng. Không dùng sidechain kèm loudnorm sau trộn. Giao cả bản chỉ giọng lẫn bản có nhạc.
+
 ## Chọn máy đọc
 
 Máy đọc đang bật nằm ở `cau-hinh.json` > `mayDung` (trình cài đặt đề xuất theo cấu hình máy, xem `skills/long-tieng-thiet-lap/references/chon-may-doc.md`); giọng riêng mặc định ở `giongRieng`. Chỉ xếp việc cho máy đang bật; muốn bật thêm máy thì thêm vào `mayDung` rồi nhờ người dùng chạy lại trình cài đặt trên máy thật.

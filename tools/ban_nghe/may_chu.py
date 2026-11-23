@@ -5,7 +5,8 @@
     python tools/ban_nghe/may_chu.py [--cong 8768]      ("Mo ban nghe.command" gọi và mở trình duyệt)
 
 Chỉ đọc, ghi trong thư mục "Du an": chon.json (lượt bạn chọn, ghi chú làm lại), thi-nghe/ket-qua.json (điểm),
-và thành phẩm khi bạn bấm "Ghép bản chính". Không gửi gì ra ngoài máy.
+thành phẩm khi bạn bấm "Ghép bản chính", và soat/tra-loi.json của dự án gỡ băng (Bàn soát, trang /go-bang).
+Không gửi gì ra ngoài máy.
 """
 import argparse
 import json
@@ -22,10 +23,14 @@ sys.path.insert(0, TOOLS)
 sys.dont_write_bytecode = True
 import cau_hinh as CH  # noqa: E402
 import ghep_tieng  # noqa: E402
+import go_bang as GB  # noqa: E402
 import hang_doi as H  # noqa: E402
 import loi_doc as L  # noqa: E402
 
 TRANG = os.path.join(os.path.dirname(os.path.abspath(__file__)), "index.html")
+TRANG_GB = os.path.join(os.path.dirname(os.path.abspath(__file__)), "go-bang.html")
+mimetypes.add_type("audio/mp4", ".m4a")
+KIEU_TRA_LOI = {"giu", "sua", "xoa", "khong-ro"}
 KHOA_GHEP = threading.Lock()
 
 
@@ -88,6 +93,63 @@ def thi_nghe(ten, lo=False):
     return {"tieuChi": thi["tieuChi"], "ungVien": uv, "ketQua": kq}
 
 
+# ----------------------------------------------------------------------------- Bàn soát gỡ băng
+def thu_muc_gb(ten):
+    goc = os.path.realpath(CH.du_an())
+    p = os.path.realpath(os.path.join(goc, ten))
+    if not p.startswith(goc + os.sep) or not os.path.isfile(os.path.join(p, "go-bang.json")):
+        raise FileNotFoundError(ten)
+    return p
+
+
+def con_lai_gb(s, tl):
+    return sum(1 for c in s["cho"] if not c.get("bo") and not c.get("tuSua") and c["id"] not in tl)
+
+
+def ds_go_bang():
+    goc = CH.du_an()
+    ra = []
+    for ten in sorted(os.listdir(goc), reverse=True) if os.path.isdir(goc) else []:
+        p = os.path.join(goc, ten)
+        s = H.doc_json(os.path.join(p, "soat", "cho-can-hoi.json"))
+        if ten.startswith("_") or not os.path.isfile(os.path.join(p, "go-bang.json")) or not s:
+            continue
+        ra.append({"ten": ten, "conLai": con_lai_gb(s, GB.tra_loi_da_co(p))})
+    return ra
+
+
+def chi_tiet_gb(ten):
+    p = thu_muc_gb(ten)
+    s = H.doc_json(os.path.join(p, "soat", "cho-can-hoi.json")) or {"cho": []}
+    tep = []
+    for t in GB.tep_nguon(p):      # cùng thứ tự với chỉ số "tep" của mỗi chỗ (chỉ tệp đã gỡ băng)
+        gb, nghe = GB.duong_tho(p, t)
+        if os.path.isfile(gb):
+            tep.append({"ten": t, "nghe": os.path.relpath(nghe, p) if os.path.isfile(nghe) else None})
+    cho = sorted((c for c in s["cho"] if not c.get("bo")),
+                 key=lambda c: (c.get("so") is None, c.get("so") or 0, c["tep"], c.get("bat") or 0))
+    return {"tieuDe": GB.thong_tin(p).get("tieuDe") or ten, "tep": tep, "cho": cho, "traLoi": GB.tra_loi_da_co(p)}
+
+
+def luu_tra_loi_gb(ten, moi):
+    p = thu_muc_gb(ten)
+    s = H.doc_json(os.path.join(p, "soat", "cho-can-hoi.json")) or {"cho": []}
+    co = {c["id"] for c in s["cho"]}
+    tl = GB.tra_loi_da_co(p)
+    for k, v in (moi or {}).items():
+        if k not in co or not isinstance(v, dict) or v.get("kieu") not in KIEU_TRA_LOI:
+            continue
+        if v["kieu"] == "sua" and not (v.get("chu") or "").strip():
+            continue
+        cu = tl.get(k) or {}
+        if cu.get("kieu") == v["kieu"] and cu.get("chu") == v.get("chu"):
+            continue                    # không đổi: giữ nguồn cũ (vd câu bạn trả lời trong chat)
+        tl[k] = {"kieu": v["kieu"], **({"chu": v["chu"].strip()} if v["kieu"] == "sua" else {}),
+                 "nguon": "Bàn soát", "luc": H.bay_gio()}
+    H.ghi_json(os.path.join(p, "soat", "tra-loi.json"), {"capNhat": H.bay_gio(), "traLoi": tl})
+    return {"traLoi": tl, "conLai": con_lai_gb(s, tl)}
+
+
 class XuLy(BaseHTTPRequestHandler):
     def log_message(self, *a):
         pass
@@ -130,6 +192,18 @@ class XuLy(BaseHTTPRequestHandler):
         try:
             if not phan:
                 return self.gui(200, open(TRANG, "rb").read(), "text/html; charset=utf-8")
+            if phan == ["go-bang"]:
+                return self.gui(200, open(TRANG_GB, "rb").read(), "text/html; charset=utf-8")
+            if phan[:2] == ["api", "go-bang"] and len(phan) == 2:
+                return self.gui(200, ds_go_bang())
+            if phan[:2] == ["api", "go-bang"] and len(phan) == 3:
+                return self.gui(200, chi_tiet_gb(phan[2]))
+            if phan[0] == "am-gb" and len(phan) >= 3:
+                goc = thu_muc_gb(phan[1])
+                p = os.path.realpath(os.path.join(goc, *phan[2:]))
+                if not p.startswith(goc + os.sep):
+                    return self.gui(403, {"loi": "ngoài dự án"})
+                return self.gui_tep(p)
             if phan[:2] == ["api", "du-an"] and len(phan) == 2:
                 return self.gui(200, danh_sach())
             if phan[:2] == ["api", "du-an"] and len(phan) == 3:
@@ -168,6 +242,8 @@ class XuLy(BaseHTTPRequestHandler):
                 with KHOA_GHEP:
                     ra = ghep_tieng.ghep(p, ban_nhap=bool(than.get("banNhap")))
                 return self.gui(200, {"ok": True, "tep": os.path.relpath(ra, p)})
+            if phan[:2] == ["api", "go-bang"] and len(phan) == 4 and phan[3] == "tra-loi":
+                return self.gui(200, luu_tra_loi_gb(phan[2], than.get("traLoi")))
             if phan[:2] == ["api", "thi-nghe"] and len(phan) == 3:
                 p = thu_muc(phan[2])
                 H.ghi_json(os.path.join(p, "thi-nghe", "ket-qua.json"), {"diem": than.get("diem", {}),

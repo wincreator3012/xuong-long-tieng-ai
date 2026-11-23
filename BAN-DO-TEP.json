@@ -2,13 +2,13 @@
 "_huong-dan": "Bản đồ tệp của bản thiết kế xưởng lồng tiếng. AI dựng xưởng: đọc DUNG-XUONG.md; lấy từng tệp vai 'chep' theo mẫu địa chỉ 'raw' (thay {ref} bằng mã commit đang dùng hoặc 'main', {p} bằng đường dẫn đã mã hoá URL), kiểm 'sha' (sha1 của 'blob <cỡ>\\0' + nội dung, giống git hash-object), tệp 'chay' thì cấp quyền chạy. Tệp vai 'ban-mau' không chép. Bản đồ này không tự liệt kê mình.",
 "repo": "https://github.com/wincreator3012/xuong-long-tieng-ai",
 "raw": "https://raw.githubusercontent.com/wincreator3012/xuong-long-tieng-ai/{ref}/{p}",
-"so_tep": 59,
-"so_tep_chep": 52,
+"so_tep": 63,
+"so_tep_chep": 56,
 "tep": [
 {
 "p": ".dong-bo.json",
-"c": 4473,
-"sha": "362ab7ded3b74825ca90af7a6a76817178aad8c2",
+"c": 4923,
+"sha": "baf3b1893c4cdd6b5758ed24453e5dbec6ffb462",
 "vai": "ban-mau"
 },
 {
@@ -74,8 +74,8 @@
 },
 {
 "p": "Long tieng tren Mac.command",
-"c": 1180,
-"sha": "a437231e4df02d558b5ef765220d71f9a26f3fd7",
+"c": 1344,
+"sha": "ecf5c7a2111ba060c077296f91c353f6289a6f15",
 "vai": "chep",
 "chay": true
 },
@@ -131,8 +131,8 @@
 },
 {
 "p": "docs/BAI-HOC.md",
-"c": 7393,
-"sha": "f7200876a812878d50d2d00fb166270692fb662d",
+"c": 15922,
+"sha": "de9b3399ab2270711d745b24071ef5ee9ca96302",
 "vai": "chep"
 },
 {
@@ -173,8 +173,8 @@
 },
 {
 "p": "skills/long-tieng/SKILL.md",
-"c": 10339,
-"sha": "cbf1f136ad286cbe3aaa4a3ebd55d1522a46b2a5",
+"c": 13142,
+"sha": "21117cfbb9bfac25576320e27b944c9f5add035e",
 "vai": "chep"
 },
 {
@@ -191,8 +191,8 @@
 },
 {
 "p": "skills/long-tieng/references/viet-loi-doc.md",
-"c": 6220,
-"sha": "b22814f0bef9e4af3258db0d029d4269ed449b5d",
+"c": 7234,
+"sha": "2f26175ced6128f2d1c88f1dbeb3cc7b80898f10",
 "vai": "chep"
 },
 {
@@ -202,15 +202,21 @@
 "vai": "chep"
 },
 {
+"p": "tools/ban_nghe/go-bang.html",
+"c": 10338,
+"sha": "714c26c5e6854f5d707c095fd5014c1d3a6edc91",
+"vai": "chep"
+},
+{
 "p": "tools/ban_nghe/index.html",
-"c": 13450,
-"sha": "5117169ca33f28dbeb7d35327a95e71b67e75142",
+"c": 13581,
+"sha": "857cd6fa9fb3acd2c28e65d915dfe39132a32b36",
 "vai": "chep"
 },
 {
 "p": "tools/ban_nghe/may_chu.py",
-"c": 9148,
-"sha": "eac8b569cf7ca8be9761ea85905b511d554831c2",
+"c": 12901,
+"sha": "feb413a46d26ebce530c5c957313a8417bd50d1c",
 "vai": "chep"
 },
 {
@@ -229,6 +235,12 @@
 "p": "tools/do_may.py",
 "c": 6558,
 "sha": "3e7b9b88fb9597d167981b741c719544f40e0e9b",
+"vai": "chep"
+},
+{
+"p": "tools/do_nhip.py",
+"c": 3810,
+"sha": "68388c06b954ad7f89b0c9fd4835cf1ad95b7c86",
 "vai": "chep"
 },
 {
@@ -262,9 +274,15 @@
 "vai": "chep"
 },
 {
+"p": "tools/go_bang.py",
+"c": 49880,
+"sha": "4fd17d333867d6b496f1674d3253254802daaccd",
+"vai": "chep"
+},
+{
 "p": "tools/hang_doi.py",
-"c": 21637,
-"sha": "462827594ce3986e196e6299503131e5b8306515",
+"c": 24287,
+"sha": "74f9295191f295ef7554cf4921af5b49f948b919",
 "vai": "chep"
 },
 {
@@ -287,8 +305,8 @@
 },
 {
 "p": "tools/kiem_tra_xuong.py",
-"c": 6459,
-"sha": "c4085689f2498feaeb93a137f949314b41f8a03f",
+"c": 8352,
+"sha": "14e23a0807f4af879de171e180180aecfe413b8c",
 "vai": "chep"
 },
 {
@@ -304,9 +322,15 @@
 "vai": "chep"
 },
 {
+"p": "tools/long_nhac.py",
+"c": 5598,
+"sha": "ead9f9da66b363b4c498eb8fd8eafd05af7e1072",
+"vai": "chep"
+},
+{
 "p": "tools/may_doc/chung.py",
-"c": 3193,
-"sha": "e663260bf19226230c6b9693e6de6aabbee22d91",
+"c": 4811,
+"sha": "7e066e503566a43fc946dee411a119a5785699ad",
 "vai": "chep"
 },
 {
@@ -323,14 +347,14 @@
 },
 {
 "p": "tools/may_doc/go_bang_fw.py",
-"c": 2016,
-"sha": "28e4720bb5785fc771aa5763c98c4e7ccbcdeb2c",
+"c": 3062,
+"sha": "25d783c551cb6d0949ff109ed406c44ed0ade5fa",
 "vai": "chep"
 },
 {
 "p": "tools/may_doc/go_bang_may.py",
-"c": 1166,
-"sha": "ef2495878429fb097f3b0d4c1c3e71c6822621a0",
+"c": 2745,
+"sha": "cb11fa0a55d3b3f527be2a1986c23f3631e8ccf5",
 "vai": "chep"
 },
 {
