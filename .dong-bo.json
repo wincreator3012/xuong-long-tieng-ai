@@ -1,6 +1,6 @@
 {
  "ghi-chu": "Do tools/dong_bo_repo.py của xưởng riêng ghi. Tệp có trong danh sách này sinh tự động: sửa ở xưởng riêng rồi đồng bộ lại, không sửa tay ở đây.",
- "lan-cuoi": "2026-11-23T11:52:14",
+ "lan-cuoi": "2026-11-26T00:37:08",
  "tep": {
   "Cai dat tren Mac.command": {
    "md5": "dc9b8003be59be87123fd0f81144b570",
@@ -19,7 +19,7 @@
    "nguon": "cau-hinh.mau.json"
   },
   "docs/BAI-HOC.md": {
-   "md5": "c855807d14916032a99db9002a3c0ad0",
+   "md5": "30069af3790b547f0dbdc4ba0bae5040",
    "nguon": "BAI-HOC.md"
   },
   "docs/THU-MAU-GIONG.md": {
@@ -31,7 +31,7 @@
    "nguon": "may-doc.json"
   },
   "skills/long-tieng/SKILL.md": {
-   "md5": "859bf634c42718b68e7523db2519e49d",
+   "md5": "17a9f0115a18517c07cd6423f6b38706",
    "nguon": "skills-nguon/ldn-long-tieng/SKILL.md"
   },
   "skills/long-tieng/references/mau-nhip-manh.md": {
@@ -83,7 +83,7 @@
    "nguon": "tools/du_an_moi.py"
   },
   "tools/ghep_tieng.py": {
-   "md5": "6c950e1939476b807a14703a72f6d1dc",
+   "md5": "7ad5d5d69e647b0ebd16a06063fb39ff",
    "nguon": "tools/ghep_tieng.py"
   },
   "tools/giong_rieng.py": {
@@ -145,6 +145,10 @@
   "tools/may_doc/vieneu_may.py": {
    "md5": "9cbdab9fdd9fe5d24b3cc5f0da1114e0",
    "nguon": "tools/may_doc/vieneu_may.py"
+  },
+  "tools/nen_phong.py": {
+   "md5": "bf0f13a1e240c9f7b21c6a87021add7e",
+   "nguon": "tools/nen_phong.py"
   },
   "tools/tai_mo_hinh.py": {
    "md5": "08c0971d77814b7d58a0005522af60bd",

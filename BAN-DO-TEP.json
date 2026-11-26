@@ -2,13 +2,13 @@
 "_huong-dan": "Bản đồ tệp của bản thiết kế xưởng lồng tiếng. AI dựng xưởng: đọc DUNG-XUONG.md; lấy từng tệp vai 'chep' theo mẫu địa chỉ 'raw' (thay {ref} bằng mã commit đang dùng hoặc 'main', {p} bằng đường dẫn đã mã hoá URL), kiểm 'sha' (sha1 của 'blob <cỡ>\\0' + nội dung, giống git hash-object), tệp 'chay' thì cấp quyền chạy. Tệp vai 'ban-mau' không chép. Bản đồ này không tự liệt kê mình.",
 "repo": "https://github.com/wincreator3012/xuong-long-tieng-ai",
 "raw": "https://raw.githubusercontent.com/wincreator3012/xuong-long-tieng-ai/{ref}/{p}",
-"so_tep": 63,
-"so_tep_chep": 56,
+"so_tep": 64,
+"so_tep_chep": 57,
 "tep": [
 {
 "p": ".dong-bo.json",
-"c": 4923,
-"sha": "baf3b1893c4cdd6b5758ed24453e5dbec6ffb462",
+"c": 5033,
+"sha": "d926b79dc59463e2b018b9d5945bc7424a97fbc0",
 "vai": "ban-mau"
 },
 {
@@ -131,8 +131,8 @@
 },
 {
 "p": "docs/BAI-HOC.md",
-"c": 15922,
-"sha": "de9b3399ab2270711d745b24071ef5ee9ca96302",
+"c": 16715,
+"sha": "bc8d4c071c8313c1804aae08d036a439dbe3e649",
 "vai": "chep"
 },
 {
@@ -173,8 +173,8 @@
 },
 {
 "p": "skills/long-tieng/SKILL.md",
-"c": 13142,
-"sha": "21117cfbb9bfac25576320e27b944c9f5add035e",
+"c": 14448,
+"sha": "b612255904fbcca1ec27d069cd157e801505fe67",
 "vai": "chep"
 },
 {
@@ -263,8 +263,8 @@
 },
 {
 "p": "tools/ghep_tieng.py",
-"c": 9025,
-"sha": "b3d2425b38af3cbe29fd6bc4a5771a96a1c16e17",
+"c": 15369,
+"sha": "14696c1ef9ef740a2e0cee3ae974ea3fa8eece67",
 "vai": "chep"
 },
 {
@@ -367,6 +367,12 @@
 "p": "tools/may_doc/vieneu_may.py",
 "c": 1078,
 "sha": "1682ced9ad8b86a48874affd7c6135811b8d27b2",
+"vai": "chep"
+},
+{
+"p": "tools/nen_phong.py",
+"c": 6861,
+"sha": "72213191df3f70e8cfe4796f35a82b5750c333f7",
 "vai": "chep"
 },
 {
