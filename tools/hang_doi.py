@@ -274,13 +274,24 @@ def mau_cho(giong, nn, may):
     hs = CH.giong(giong)
     chinh = (hs.get("mauChinh") or {})
     chi_dinh = giong.split("#")[1] if "#" in giong else None   # @an#vi-02: dùng đúng mẫu vi-02
-    ma = chi_dinh or chinh.get(nn) or chinh.get("vi") or chinh.get("en")
-    mau = next((m for m in hs.get("mau", []) if m.get("id") == ma), None)
-    if chi_dinh and not any(m.get("id") == ma for m in hs.get("mau", [])):
-        raise RuntimeError(f"hồ sơ {giong.split('#')[0]} không có mẫu {ma}")
-    ra = {"ten": giong[1:].replace("#", "-")}
-    if mau:
+    # @an#vi-03+vi-02: nhiều mẫu cùng lúc (Drama 3 nhận danh sách mẫu; báo cáo kỹ thuật: thêm mẫu thì giống giọng hơn)
+    cac_ma = [x for x in (chi_dinh or "").split("+") if x] or [chinh.get(nn) or chinh.get("vi") or chinh.get("en")]
+    cac_mau = []
+    for ma in cac_ma:
+        mau = next((m for m in hs.get("mau", []) if m.get("id") == ma), None)
+        if chi_dinh and not mau:
+            raise RuntimeError(f"hồ sơ {giong.split('#')[0]} không có mẫu {ma}")
+        if mau:
+            cac_mau.append(mau)
+    if len(cac_mau) > 1 and may != "drama3":
+        raise RuntimeError(f"chỉ Drama 3 nhận nhiều mẫu cùng lúc; {may} dùng một mẫu (bỏ dấu +)")
+    ra = {"ten": giong[1:].replace("#", "-").replace("+", "-")}
+    if len(cac_mau) == 1:
+        mau = cac_mau[0]
         ra.update(tep=CH.giai("@kho/" + mau["tep"]), loi=mau["loi"], ma=mau["id"])
+    elif cac_mau:
+        ra.update(tep=[CH.giai("@kho/" + m["tep"]) for m in cac_mau], loi=[m["loi"] for m in cac_mau],
+                  ma="+".join(m["id"] for m in cac_mau))
     dk = hs.get("dangKy") or {}
     for k in ("gemini", "elevenlabs"):
         if dk.get(k):

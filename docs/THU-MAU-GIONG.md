@@ -32,6 +32,15 @@ Mẫu giọng quyết định phần lớn độ giống khi máy đọc bằng 
 
 > Good morning, everyone. Before we begin, let's take a moment to arrive. Notice your feet on the floor, your breath moving in and out. In this program, we'll explore how emotions live in the body, and how small daily practices can help us respond rather than react. There is no right way to do this. Just be curious, and be kind to yourself along the way.
 
+## Đợt thu bổ sung: giọng nói tự nhiên (khoảng 10 phút)
+
+Thu khi thi nghe cho thấy giọng máy cao hơn hoặc "đọc" hơn giọng nói thật. Mẫu đọc kịch bản mang theo nhịp của người đang đọc; máy đọc học cả nhịp ấy chứ không chỉ âm sắc.
+
+- Cùng micro, cùng chỗ ngồi như lần thu trước. Tắt chế độ tách giọng hay khử ồn của máy (trên Mac: Trung tâm điều khiển > Chế độ micro > Tiêu chuẩn; điện thoại: tắt "Nâng cao bản ghi"), để giữ tiếng thở và tiếng phòng thật.
+- Nói tự do, không kịch bản, ba lượt, mỗi lượt 1 đến 2 phút: kể một chuyện thật gần đây ở lớp học; giảng một khái niệm mình đã dạy rất nhiều lần, như đang đứng lớp; trả lời một câu hỏi học viên hay hỏi, như đang trò chuyện. Vấp thì cứ nói tiếp, Claude chỉ lấy những quãng liền mạch.
+- Một lượt hướng dẫn thực hành 1 đến 1,5 phút, tự nói như đang hướng dẫn lớp thật, chậm, để nguyên tiếng thở.
+- Claude gỡ băng, cắt những quãng 15 đến 25 giây đẹp nhất, soát lời khớp từng chữ (lời mẫu sai làm máy đọc sai nhịp), đo cao độ, rồi thi nghe mù: mẫu cũ, mẫu mới, và mẫu mới ghép mẫu cũ (`@<tên>#<mẫu>+<mẫu>`).
+
 ## Gửi cho Claude
 
 Lưu các tệp vào một thư mục rồi nhắn Claude đường dẫn. Claude sẽ cắt, chuẩn hóa, đưa vào kho giọng (`Kho giong/giong-noi/<tên hồ sơ>/`), đăng ký với Gemini và ElevenLabs nếu bạn muốn, rồi dựng một lượt thi nghe mù so các mẫu với nhau để bạn chọn mẫu chính.

@@ -8,7 +8,7 @@
 {
 "p": ".dong-bo.json",
 "c": 5033,
-"sha": "cf9dffbac714684c3d22aba2eb22a1ea92b53355",
+"sha": "e66012312434b535c3c7066ea4640083576e7c89",
 "vai": "ban-mau"
 },
 {
@@ -131,14 +131,14 @@
 },
 {
 "p": "docs/BAI-HOC.md",
-"c": 16715,
-"sha": "bc8d4c071c8313c1804aae08d036a439dbe3e649",
+"c": 18368,
+"sha": "39e3fcaa6b6ec10433ac65a3d3b6eaa058e9f7d0",
 "vai": "chep"
 },
 {
 "p": "docs/THU-MAU-GIONG.md",
-"c": 4793,
-"sha": "e9cb97819166eccf03b4fa83b78c7393e877eedb",
+"c": 6198,
+"sha": "ecfae2a1a6cb38aa9255a2c31c6b14fcc41edd5e",
 "vai": "chep"
 },
 {
@@ -281,8 +281,8 @@
 },
 {
 "p": "tools/hang_doi.py",
-"c": 24287,
-"sha": "74f9295191f295ef7554cf4921af5b49f948b919",
+"c": 24925,
+"sha": "96f8ea3386220f86524f73635bb113e65595ab1f",
 "vai": "chep"
 },
 {

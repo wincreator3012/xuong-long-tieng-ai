@@ -1,6 +1,6 @@
 {
  "ghi-chu": "Do tools/dong_bo_repo.py của xưởng riêng ghi. Tệp có trong danh sách này sinh tự động: sửa ở xưởng riêng rồi đồng bộ lại, không sửa tay ở đây.",
- "lan-cuoi": "2026-11-26T00:47:32",
+ "lan-cuoi": "2026-11-26T01:53:18",
  "tep": {
   "Cai dat tren Mac.command": {
    "md5": "dc9b8003be59be87123fd0f81144b570",
@@ -19,11 +19,11 @@
    "nguon": "cau-hinh.mau.json"
   },
   "docs/BAI-HOC.md": {
-   "md5": "30069af3790b547f0dbdc4ba0bae5040",
+   "md5": "8093937dbae93a6b9cd788e72f190461",
    "nguon": "BAI-HOC.md"
   },
   "docs/THU-MAU-GIONG.md": {
-   "md5": "876dad628088285cf9249a1d4c57360e",
+   "md5": "2238c2cd15ceb6c96081abce98512433",
    "nguon": "docs/THU-MAU-GIONG.md"
   },
   "may-doc.json": {
@@ -95,7 +95,7 @@
    "nguon": "tools/go_bang.py"
   },
   "tools/hang_doi.py": {
-   "md5": "fa3983f9f1674ce502a19cb8c975f058",
+   "md5": "3f6edc166742c471317a59e2397cde34",
    "nguon": "tools/hang_doi.py"
   },
   "tools/khoa.py": {
