@@ -8,7 +8,7 @@
 {
 "p": ".dong-bo.json",
 "c": 5033,
-"sha": "d926b79dc59463e2b018b9d5945bc7424a97fbc0",
+"sha": "cf9dffbac714684c3d22aba2eb22a1ea92b53355",
 "vai": "ban-mau"
 },
 {
@@ -173,8 +173,8 @@
 },
 {
 "p": "skills/long-tieng/SKILL.md",
-"c": 14448,
-"sha": "b612255904fbcca1ec27d069cd157e801505fe67",
+"c": 14491,
+"sha": "00fb521f6456a8acd948894138cf3219e6b45c6c",
 "vai": "chep"
 },
 {
@@ -251,8 +251,8 @@
 },
 {
 "p": "tools/du_an_moi.py",
-"c": 3185,
-"sha": "0c517aa829df91f8956fd859989ede7f81531b09",
+"c": 3393,
+"sha": "e53a53618bf57f1326932828cd8b72e16e5626e1",
 "vai": "chep"
 },
 {

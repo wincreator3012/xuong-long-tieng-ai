@@ -23,12 +23,16 @@ giong: {giong}
 soLuot: {so_luot}
 phongCach: {phong_cach}
 nghiGiuaDoan: 0.6
+nenPhong: co
+coGianNghi: 0.1
+hoiTho: co
 ---
 
 <!-- Mỗi đoạn văn (cách nhau bằng một dòng trống) là một đoạn đọc. Thẻ trong lời: {{ngừng}}, {{ngừng dài}}, {{cười}},
 {{cười nhẹ}}, {{thở dài}}, {{hít thở}}, {{hắng giọng}}. Dòng riêng {{ngừng 1.5}}: thêm 1,5 giây lặng.
 Dòng "> chỉ dẫn | directions": cách đọc cho đoạn ngay dưới. {{{{chữ|cách đọc}}}}: đặt cách đọc riêng.
-Tiêu đề "# ...": không đọc, chèn quãng lặng dài hơn. Không dùng ngoặc vuông trong lời đọc. -->
+Tiêu đề "# ...": không đọc, chèn quãng lặng dài hơn. nenPhong, coGianNghi, hoiTho: lót tiếng nền phòng,
+nghỉ co giãn ±10%, hơi thở trước đoạn dài khi ghép (bỏ dòng hoặc ghi "khong" để tắt). Không dùng ngoặc vuông trong lời đọc. -->
 
 """
 
